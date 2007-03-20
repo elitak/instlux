@@ -1,0 +1,404 @@
+Instlux, Copyright (C) 2005-2006 Jordi Massaguer Pla
+
+Egilea: Jordi Massaguer Pla
+Laguntzaileak:
+Behean zerrendaturiko pertsonek instlux lagundu dute, kodea gehituaz, 
+berrelikadura edo zabaltzean.
+Zerrenda honetan agertu beharko zinakela penstatu ezkero idatzi mezu 
+bat jordimassaguerpla@yahoo.es helbidera.
+
+LIST_OF_CONTRIBUTORS
+
+-----------------------------------------------------------
+
+GNU General Public License
+
+2. Bertsioa, 1991ko Ekaina
+Euskarazko itzulpena : 2003ko Abuztuan
+    Jordi Blasi Uribarri-k egina
+    www.librezale.org
+
+
+This is an unofficial translation of the GNU General Public License
+into Basque. It was not published by the Free Software Foundation,
+and does not legally state the distribution terms for software that
+uses the GNU GPL--only the original English text of the GNU GPL does
+that. However, we hope that this translation will help basque
+speakers understand the GNU GPL better.
+
+Hau "GNU General Public License" delakoaren euskaraketa ez-ofizial
+bat da. Itzulpen hau ez du "FSF Free Software Foundation"-ek
+argitaratu, eta ez ditu legalki zehazten GNU GPL lizentzia
+erabiltzen duen softwarearen banatze baldintzak -- Hori GNU GPL
+Ingelesezko jatorrizko testuak baino ez du egiten. Hala ere,
+itzulpen hau euskaldunak GNU GPL lizentzia hobeto ulertzen
+laguntzeko asmoarekin egin dugu.
+
+
+            GNU GENERAL PUBLIC LICENSE
+               2. bertsioa, Ekainak 1991
+
+ Copyright (C) 1989, 1991 Free Software Foundation, Inc.
+               59 Temple Place, Suite 330, Boston, MA  02111-1307
+USA
+
+ Edozeinek lizentzia dokumentu honen kopiak egiteko eta hauek
+banatzeko baimena dauka baina beraren moldatzea ez dago baimendurik
+
+                Sarrera
+
+Software gehienen lizentziak hura konpartitzeko eta aldatzeko
+askatasuna ukatzeko pentsatuta daude. Honen kontra, "GNU-General
+Public License" deritzonak software librea konpartitu eta banatzeko
+zure askatasuna bermatzeko asmoa dauka, hau da, softwarea
+erabiltzaile guztientzat librea dela bermatzea. Lizentzia hau "Free
+Software Foundation"-aren software gehienari aplikatzen zaio, bai eta
+beste edozein programari ere, bere egileek lizentzia hau erabiltzea
+erabakitzen badute. (Free Software Foundation-en beste zenbait
+software "GNU Library General Public License" lizentziak babesten
+du.) Zure programentzako hori ere erabil dezakezu.
+
+Software libreaz ari garenean, askatasunaz ari gara, ez prezioaz. Gure
+Lizentziak software librearekin egin daitezkeenak bermatzeko
+diseinatuta daude: kopiak banatzeko askatasuna daukazula bermatzeko
+(eta nahi izanez gero zerbitzua kobratzekoa), iturburu-kodea jasotzen
+duzula edo nahi duzunean jaso dezakezula bermatzeko, softwarea alda
+dezakezula edo beraren zatiak porgrama libre berrietan erabil
+ditzakezula bermatzeko, eta hau guztia egin dezakezula badakizula
+bermatzeko diseinatuta daude.
+
+Zure eskubideak babesteko, zenbait murrizketa egin behar ditugu,
+murrizketa hauek edonori zeure eskubideak ukatzea galeraziko diote,
+bai eta eskubideak bertan behera uztea ere. Murrizketa hauen ondorioz,
+softwarearen kopiak banatzen dituenari edo softwarea aldatzen duenari
+hainbat erantzunkizun ezartzen zaizkio.
+
+Adibidez, programaren kopiak banatzen baldin badituzu, bai dohainik
+eta bai ordain truke, jasotzen dutenei zuk dituzun eskubide
+berberak eman behar dizkiezu. Beraiek ere iturburu-kodea jasotzen
+dutela, edo jasotzeko aukera dutela ziurtatu behar duzu. Eta
+baldintza hauek erakutsi behar dizkiezu beraien eskubideak ezagutu
+ditzaten.
+
+Zure eskubideak bi pausutan babesten ditugu: (1) softwareari
+copyright abisua ezartzen zaio, eta (2) kopiatzeko, banatzeko eta
+aldatzeko aukera legala ematen dizun lizentzia hau eskaintzen dizugu.
+
+Horrez gain, egileen babeserako, eta gurerako, guztiei argi utzi nahi
+diegu software libre honentzat ez dagoela inolako bermerik.
+Softwarea besteren batek aldatzen eta banatzen baldin badu, jasotzen
+dutenek hori jatorrizkoa ez dela argi izan dezaten nahi dugu,
+horrela, besteren batek sartutako edozein arazok ez dezan eraginik
+izan berezko egileen ospean.
+
+Azkenik, edozein programa libre beti egongo da softwarearen patenteen
+mehatxupean. Gure asmoa, software libreen birbanatzaileek banakako
+patente lizentzia lortzearen arriskua ekiditea da, horretarako, 
+programa bera jabeduna bihurtuko dugu. Arrisku honi aurre egiteko,
+argi utzi dugu edozein patentek guztion erabilera librea baimendu
+behar duela edo ez dela inolaz ere lizentziapean jarriko.
+
+Kopiatzeko, banatzeko eta aldatzeko baldintza zehatzak hemendik
+aurrerakoak dira.
+
+
+
+        GNU PUBLIKOARENTZAKO LIZENTZIA OROKORRA
+    KOPIATZEKO, BANATZEKO ETA ALDATZEKO BALDINTZAK
+
+  0. Lizentzia honek Publikoarentzako Lizentzia Orokor honen
+baldintzapean banatu daitekeela adierazten duen egileak jarritako
+edozein abisu daraman edozein programa edo bestelako lanari
+aplikatzen zaio. Hemendik aurrera "Programa" horrelako edozein
+programa edo lana izango da, eta "Programan oinarritutako lana"
+programa bera edo copyright legepean dagoen edozein deribaturiko
+lana; hau da, Programa bera edo beraren zati bat daukan edozein lan,
+bai kopia zehatzak edo aldaketak eta/edo beste edozein
+hizkuntzatarako itzulpena. (Edozein moduan itzulpena aldaketaren
+esanahian mugaketarik gabe sartzen da). "Zu" Lizentzia bakoitzari
+esango zaio.
+
+Kopiatzeaz, banatzeaz eta aldatzeaz besteko eragiketarik ez da
+betetzen Lizentzia honetan; beraren eremuaz kanpo geratzen dira.
+Programa erabiltzea bera ez da murrizten, eta bertatik ateratako
+emaitza barruan sartzen da, baldin eta hauek Programan oinarritutako
+lan bat badira (Programa bera erabiltzetik lortu badira edo ez). Hori
+egia izateak Programak egiten duenaren arabera izango da.
+
+  1. Programaren iturburu kodearen kopia zehatzak, jasotzen duzun
+moduan, egin eta banandu ditzakezu, edozein bitartekoan, guztietan
+argi eta garbi copyright eta garantia abisua publikatu, Lizentzia
+honi eta garantia ezari dagokion abisu guztiak mantendu eta jasotzen
+duten guztiei Programarekin batera Lizentzia honen kopia bat ematen
+diezun bitartean.
+
+Ordaina jaso dezakezu kopia transmisioaren ekintza fisikoaren truke,
+eta, horrela nahi izanez gero, garantia bat eskaini dezakezu ordain
+baten truke.
+
+  2. Programaren kopia edo kopiak, edo honen edozein zati aldatu
+dezakezu, horrela Programan oinarritutako lan bat sortuz, eta
+aldaketa edo lan horiek banandu goiko 1.en Atalaren baldintzapean,
+zuk baldintza hauek betetzen dituzun bitartean:
+
+    a) Zuk aldatutako fitxategietan zuk aldatutakoak direla eta
+aldaketaren data ikusgarriak diren abisuak jarri behar dituzu.
+
+    b) Zuk banatzen edo argitaratzen duzun edozein lanean, bere
+osotasunean edo zati batean Programa daukala, bertatik edo bere zati
+batetik deribatua dela, osorik lizentziatu behar diezula Lizentzia
+honen pean hirugarren pertsonei ordainik jaso gabe.
+
+    c) Programak normalean komando interaktiboak irakurtzen baldin
+baditu, elkarrizketa interaktibo horretan modu arruntenean martxan
+jartzerakoan, copyright egokiaren abisua eta garantiarik ez
+dagoenaren argiketa (edo garantia zuk ematen duzula), erabiltzaileak
+programa baldintza hauen pean banatu dezaketela eta hauei Lizentzia
+honen kopia bat nola ikusi adierazten duen iragarki bat inprimatu edo
+erakutsiarazi behar duzu. (Programak berak interaktiboa baldin bada
+baina normalean ez badu horrelako iragarkirik erakusten, Programan
+oinarritutako zure lanak ez du zergatik iragarkia erakutsi behar.)
+
+_
+
+Behar hauek aldatutako lanari bere osotasunean aplikatzen zaizkio.
+Lan horren zati identifikagarriak Programatik ez badira deribatu, eta
+berez arrazoiz lan independente eta bereiztutako lanak kontsideratu
+baldin badaitezke, orduan Lizentzia honek, eta bere baldintzak, ez
+zaizkie aplikatuko banandutako lan moduan zabaltzen dituzunean. Baina
+zati hauek Programan oinarritutako lan bat den osotasun baten moduan
+zabaltzen dituzunean, guztiaren zabaltzea lizentzia honen
+baldintzapetan izan behar da, zeinen baldintzak beste lizentzia
+batzuentzat osotasun guztiari gehitzen zaio, eta horregatik zati
+guztiei, edozeinek idatzi duelaz aparte.
+
+Atal honen asmoa ez da zuk osorik idatzitako lan baten gaineko
+eskubideak bereganatzea edo eztabaidatzea; baizik eta, asmoa,
+Programan oinarritutako egile anitzen lanak edo deribazioen zabaltzea
+kontrolatzeko ahalmena izatea.
+
+Beste alde batetik, Programan oinarrituta ez dagoen beste lan baten
+Programarekin (edo Programan oinarritutako lan batekin) elkartze
+hutsa gordeketa edo zabaltze medio batean ez du beste lana Lizentzia
+honen pean jartzen.
+
+  3. Programa (edo honetan oinarritutako lan bat, 2.en atalaren
+arabera) kode objektu edo exekutagarri moduan zabaldu dezakezu 1.en
+eta 2.en atalen baldintzapean, hurrengoetako bat egiten duzun
+bitartean:
+
+    a) Makinak irakurri dezakeen iturburu kodearekin batera zabaldu,
+1.en eta 2.en atalen baldintzapean eta normalean softwarearen
+elkarbanatzerako erabiltzen den euskarri batean; edo,
+
+    b) Gutxienez hiru urteko balioa izango duen idatzitako eskaintza
+batekin elkartu, edozein hirugarren parteri, fisikoki zabaltze horren
+kostua baino gehiago ez den ordain baten truke, dagokion iturburu
+kodearen makinak irakurgai duen kopia oso bat, 1.en eta 2.en atalen
+baldintzapean normalean softwarearen elkarbanatzerako erabiltzen den
+euskarri batean emateko konpromisoarekin; edo,
+
+    c) Dagokion iturburu kodea luzatzeko zuk jasotako eskaintza
+moduan jasotako informazioarekin elkartu. (Alternatiba honek
+distribuzio ez-komertzialentzat da bakarrik eta soilik zuk programa
+kode objektu edo exekutagarri moduan, eskaintza horrekin jaso baldin
+baduzu, b azpiatalaren arabera.)
+
+Lan baten iturburu kodea lanaren gaineko aldaketak egiteko modu
+hoberena esan nahi du. Lan exekutagarri batentzat, iturburu kode
+osoa, osotzen duten modulu guztien iturburu kodea, erlazionatutako
+interfaze-aren edozein definizio fitxategi bai eta exekutagarriaren
+konpilazioa eta instalazioa kontrolatzeko script guztiak esan nahi
+du. Hala ere, salbuespen berezi moduan, banatutako iturburu kodea
+normalean Sistema Eragilearen osagai arruntetan (konpilatzailea,
+kernel eta horrelakoak) banatzen den edozein gauza (ez iturburu
+kodean edo bitarran) ez du barnean izan behar, osagai horrek
+exekutagarriari lotuta ez baldin badoa.
+
+Exekutagarriari edo kode objektuaren banaketa kopiatzeko leku zehatz
+batera sarrera eskaintzen egiten bada, orduan iturburu kodea
+kopiatzeko leku berdinera sarrera berdintsua eskeintzea iturburu kode
+honen banaketa bezala onartuko da, hirugarren parteak biak kopiatzen
+ez badituzte ere.
+
+_
+
+  4. Ezin izango duzu Programa kopiatu, azpi-lizentziatu edo banatu
+espreski Lizentzia honen baldintzapean ez baldin badator. Kopiatzeko,
+aldatzeko, azpi-lizentziatzeko edo banatzeko edozein saiakera
+debekatuta dago eta bertan behera utziko ditu Lizentzia honen gaineko
+zure eskubideak. Hala ere zuregandik Lizentzia honi lotutako kopiak
+edo bahimenak jaso dituzten partaideen lizentziak ez dira bukatuko
+beraren baldintzak betetzen dituzten bitartean.
+
+  5. Ez daukazu zergatik lizentzia hau onartu, sinatu ez duzulako.
+Hala ere, ez dago Lana edo bere deribatutako lanak aldatzeko edo
+banatzeko bahimena ematen dizun beste edozer. Ekintza hauek legeak
+debekatuta daude Lizentzia hau onartzen ez baduzu. Horregatik,
+Programa (edo Programan oinarritutako lan bat) aldatu edo banatzean,
+Lizentzia honen onartzea adierazten duzu hori egiteko, eta Programa
+edo programan oinarritutako lan bat kopiatzeko, banatzeko eta
+aldatzeko bertan adierazten diren baldintza guztiak.
+
+  6. Programa (edo Programan oinarritutako edozein lan) birbanatzen
+duzun bakoitzean, jasotzen duenak automatikoki baldintza hauei
+lotutako Programa kopiatzeko, banatzeko edo aldatzeko lizentzia
+hasierako lizentziadunetik jasotzen du. Ezin izango duzu bertan
+adierazitako jasotzen duenaren eskubideei bestelako baldintzarik
+ezarri. Ezin izango duzu hirugarren bat Lizentzia hau betetzen
+behartu.
+
+  7. Epaiketa, patente baten arau-hausteagatik alegazio, edo
+bestelako arrazoi batengatik (ez soilik patente kontuetan), Lizentzia
+honekin kontraesanetan datozen baldintzak jartzen bazaizkizu
+(epaimahaiaren aginduz, akordioagatik edo besteren batengatik), honek
+ez zaitu Lizentzia honen baldintzetatik askatzen. Lizentzia honen
+baldintzak eta bestelako betebeharrak batera betetzeko ezin baldin
+baduzu banatu, orduan ezin izango duzu inolaz ere Programa banatu.
+Adibidez, patente batek zuregandik, zuzenean edo bitartekarien
+medioz, ordain gabeko banaketa ez badu onartzen, orduan bai hura eta
+bai Lizentzia hau betetzeko modu bakarra Programa inolaz ere ez
+banatzea da.
+
+Atal honen edozein zati edozein egoeran baliogabekoa edo aplikaezina
+gertatzen bada, atalaren joera aplikatzera izango da, eta atala bere
+osotasunean beste edozein egoeran aplikatuko da.
+
+Atal honen asmoa ez da edozein patente edo bestelako jabetza
+eskubideak zapaltzera, edo horien erreklamazioen balioa erantzutera
+bultzatzea; atal honen helburu bakarra lizentzia publikoaren
+ekimenetan oinarrituta dagoen software askearen banaketa sistemaren
+osotasuna defenditzea da. Jende askok sistema honen bitartez
+banatutako software multzo zabalari eskuzabal ekarpen asko egin
+dizkio, sistema honen aplikazio zuzenerako; egile/emailearen aukera
+da softwarea banatzeko sistema eta lizentzia batek ezin du aukera
+hori inposatu.
+
+Atal honek beste Lizentzia guztiaren emaitza bezala ikusten dena
+argitu nahi du.
+
+_
+  8. Programaren banaketa eta/edo erabiltzea zenbait herrialdetan
+patenteengatik edo egilearen jabego adierazpenengatik murriztuta
+baldin badago, Lizentzia honen pean jartzen duen hazierako jabeak
+herrialde horiek adierazten dituen banaketa murrizketa esplizitu bat
+ezarri dezake, banaketa beste herrialde guztietan onartuta dagoela.
+Kasu horretan, Lizentzia honek murrizketa hori barnean izango du,
+bertan idatzita egongo balitz bezala.
+
+  9. Free Software Foundation-ak "General Public License" honen
+berrikusitako edo berriak diren bertsioak argitaratu lezake
+noizbehinka. Bertsio berri horiek izpirituan honen antzekoak izango
+dira, baina detaileetan ezberdinduko dira, arazo edo egoera berriak
+zuzentzeko.
+
+Bertsio bakoitzari ezberdintzen duen bertsio zenbaki bat dauka.
+Programak berari eta beste hurrengo edozein bertsioari dagokion
+bertsio zenbaki bat adierazten badu, bertsio horren edo "Free
+Software Foundation"-ak argitaratutako hurrengo edozein bertsioaren
+baldintzak betetzeko aukera daukazu. Programak bertsio zenbaki bat
+adierazten ez badu "Free Software Foundation"-ak inoiz argitaratu
+duen edozein bertsio aukeratu dezakezu.
+
+  10. Programaren zatiak banaketa baldintza ezberdinak dituzten beste
+programa aske batzuetara gehitu nahi baldin baduzu, egileari bahimena
+eskatu beharko diozu. "Free Software Foundation"-ak babestutako
+softwarearentzako "Free Software Foundation"-ari eskatu bahimena;
+batzutan salbuespenak egiten ditugu honekin. Gure erabakia bi
+helburuk zuzenduko dute:
+    * gure software askearen egoera askearen mantentzea
+    * softwarearen elkarbanatzea eta erabilpena laguntzea.
+
+EZ DAGO INOLAKO GARANTIARIK
+
+  11. PROGRAMA ORDAIN GABE LIZENTZIATU DENEZ GERO, PROGRAMARENTZAKO
+EZ DAGO INOLAKO GARANTIARIK, APLIKAGARRIA DEN LEGEAK ONARTZEN DUEN
+NEURRIRARTE. JABEGOA DUTENEK, BESTEREIK IDATZIZ ZEHAZTEN EZ DUTEN
+BITARTEAN, PROGRAMA "DEN MODUAN" EMATEN DUTE, INOLAKI GARANTIARIK
+GABE, EZ ADIERAZITAKOA, EZ SUPOSATUTAKOA, HELBURU ZEHATZ BATERAKO
+ERABILGARRITASUNA ETA SALTZEARI DAGOZKIONAK BARNE, BAINA EZ HAUETARA
+MUGATUA. PROGRAMAREN KALITATEARI ETA FUNTZIONAMENDUARI DAGOKION
+ARRISKU GUZTIA ZURE GAIN DAGO. PROGRAMA AKATSAK AGERTZEN BA DITU,
+BEHAR DIREN ZERBITZU, KONPONKETA ETA ZUZENKETA GUZTIAK ZURE GAIN
+EGONGO DIRA.
+
+  12. APLIKAGARRIAK DIREN LEGEAK BEHARTUTA EDO IDATZIZ ONARTUTA EZ
+BADA, JABEGOA DUEN EDOZEINEK EDO PROGRAMA ALDATU EDO BANATU DUEN
+BESTE HIRUGARREN BATEK EZIN IZANGO DU INOLAZ ERE ZU EDOZEIN KALTEREN
+ARDURADUN EGIN, PROGRAMAREN ERABILERAK EDO ERABILI EZINAK ERAGINDAKO
+KALTE OROKOR, BEREZI, BAPATEKO EDO ONDORIOAK BARNE (ZU EDO BESTE
+BATEK JASANDAKO DATUEN GALERA EDO HAUEN TRATAMENDU OKERRA EDO BESTE
+PROGRAMA BATEKIN ELKARLANEAN IBILTZEAN GERTATUTAKO EDOZEIN AKATS
+BARNE, BAINA EZ HAUETARA MUGATUA), KALTE HORIEN POSIBILITATEZ
+ABISUAREN GAIN EGONDA ERE.
+
+BALDINTZEN BUKAERA
+
+
+
+    Nola aplikatu baldintza hauek zure Programa berriei
+
+  Programa berri bat egiten baduzu, eta publiko zabalean erabilera
+ahalik eta handienekoa izatea nahi baldin baduzu, baldintza hauen
+pean edozeinek banatu eta aldatu dezakeen software askea egitea
+hoberena da.
+
+  Hau egiteko, programan hurrengo abisuak jarri. Garantia eza argi
+uzteko da abisua iturburu fitxategi guztien hasieran jartzea
+seguruagoa da; eta fitxategi bakoitzak gutxienez "copyright" lerroa
+eta abisu guztia dagoen lekurako esteka bat izan beharko luke.
+
+    <lerro bat programaren izena eta egiten duenaren ideia laburra >
+    Copyright (C) <urtea>  <egilearen izena>
+
+    Programa hau software askea da; "Free Software Foundation"-ek
+argitaratutako "GNU General Public License"-ak adierazten duen
+baldintzapetan banatu eta/edo aldatu dezakezu, bai    Lizentziaren 2.
+bertsioa edo beste hurrengoko edozein.
+
+    Programa hau erabilgarria izango delakoan banatzen da, baina
+INOLAKO GARANTIARIK GABE; ez eta HELBURU ZEHATZ BATERAKO
+ERABILGARRITASUNA ETA SALTZEARI suposatu litezkeenak. Zehaztasun
+gehiagorako "GNU General Public License"-a irakurri.
+
+    "GNU General Public License"-ren kopia bat jaso behar izango
+zenuke programarekin batera. Horrela ez bada izan hurrengo helbidera
+idatzi:
+    Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+Boston, MA  02111-1307  USA
+
+Baita ere, posta elektronikoz eta arruntaz zu nola kontaktatu
+zehaztu.
+
+Programa elkarreragilea bada, modu honetan hasten denean honelako
+abisu labur bat erakustaraziozu:
+
+    Gnomovision version 69, Copyright (C) urtea Egilearen izena
+    Gnomovision INOLAKO GARANTIARIK GABE DATOR; zehaztasun gehiago
+ikusteko sakatu 'show w'.
+    Hau software askea da, eta banatzea zenbait baldintzapetan
+onartuta dago; zehaztasun gehiago ikusteko sakatu 'show c'.
+
+'show w' eta 'show c' ustezko komandoak "General Public License"-aren
+atal egokiak erakutsi beharko lukete. Noski, erabiltzen dituzun
+komandoak beste era batera izendatu dezakezu, arratoi klik bat, menu
+atal bat edo zure programarekin bat datorren edozein gauza izan
+daitezke ere.
+
+Baita ere, programatzaile moduan lan egiten baduzu, zure
+arduradunaren edo zure eskolaren, baldin badago, programaren
+jabegoaren ezeztatze bat sinarazi beharko zenuke, behar baldin bada.
+Hemen adibidea, izenak aldatu:
+
+  Yoyodyne, Inc., honen bitartez, James Hacker-ek idatzitako (make-k
+konpilatzailera pasatzen duena) `Gnomovision' programan jabego
+interes guztiak bertan bera uzten ditu.
+  <Ty Coon-en sinadura>, 1 April 1989
+  Ty Coon, Vice-ko Lehendakaria
+
+"General Public License" honek ez du zure programa bestelako programa
+jabedunetara gehitzea baimentzen. Zure programa azpierrutinen
+liburutegi bat baldin bada, aplikazio jabedunek zure errutinari
+lotzea erabilgarriagoa kontsideratu beharko zenuke. Hau bada egin
+nahi duzuna erabili behar duzuna "GNU Library General Public License"
+da, lizentzia honen ordez.

@@ -1,0 +1,6 @@
+"Ubuntu 5.10 installer" "Ubuntu 5.10 Installateur"
+"Install Ubuntu 5.10 (Breezy)" "Anbringen Ubuntu 5.10 (Breezy)"
+"OpenSuSE10 installer" "OpenSuSE10 Installateur"
+"Install OpenSuSE 10" "Anbringen OpenSuSE 10"
+"OpenSuSE10.2 installer" "OpenSuSE10.2 Installateur"
+"Install OpenSuSE 10.2" "Anbringen OpenSuSE 10.2"

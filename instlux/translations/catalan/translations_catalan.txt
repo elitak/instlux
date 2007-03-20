@@ -1,0 +1,8 @@
+"Ubuntu 5.10 installer" "Instal.lar Ubuntu 5.10"
+"Install Ubuntu 5.10 (Breezy)" "Instal.la Ubuntu 5.10 (Breezy)"
+"OpenSuSE10 installer" "Instal.la OpenSuSE10"
+"Install OpenSuSE 10" "Instal.la OpenSuSE 10"
+"OpenSuSE10.2 installer" "Instal.la OpenSuSE10.2"
+"Install OpenSuSE 10.2" "Instal.la OpenSuSE 10.2"
+"Linka 1.0 installer" "Instal.la Linkat 1.0"
+"Install Linkat 1.0" "Instal.la Linkat 1.0"
