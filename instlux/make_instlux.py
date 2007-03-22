@@ -1,22 +1,34 @@
+#!/usr/bin/python
+
 import os
 import sys
 
+def remove_svn_dirs( dirs ):
+	dirs_without_svn = []
+	for dir in dirs:
+		if dir.find('.svn')==-1:
+			dirs_without_svn.append( dir )
+	
+	return dirs_without_svn
+
 #kernels = [ {"distribution":"Linkat","version":"1.0","media":"CDROM","kernel":"LINUX2","drivers":"INITRD2","append":"root=/dev/hdc devfs=mount,dall ramdisk_size=65536"}]
 kernels = [ {"distribution":"OpenSuSE","version":"10.2","media":"NET","kernel":"linux","drivers":"initrd","append_ide":"devfs=mount,dall ramdisk_size=65536 install=http:opensuse/distribution/10.2/repo/oss server=155.210.39.56","append_sata":"devfs=mount,dall ramdisk_size=65536 install=http:opensuse/distribution/10.2/repo/oss server=155.210.39.56"}]
-languages = os.listdir("translations")
+languages = []
+languages = remove_svn_dirs( os.listdir("translations")) 
 #languages = ["english"]
 
 #2007-01-07
 list_of_contributors = "Greg Johnston\nMichael\nMarc Herbert\nPiarres beobide\nsesammases\nbalu_kalla\nnumatrix\nnotable\nJimmyGoon\nfra1027\nrev pete moss\nRajesh\nHeath\nAMCDeathKnight\nRobin Patt-Corner\ncarsten\nTonA\ntomtenberge\nJack Chen\nKevin\nTim\nDaveW\nBhasadu\nMarcoAurelio\nEl Paco\nkkkkk\nDan\nAas\nmetallicgreenb\nGrymyrk\nATB\nEmanuel Levy\nindygo\npetrbok\nVati-Khan\noffdutyBorg\nalicia_sb\nSam Johnston\nHarryhe\ntotro2\nHenrik Brink"
 
 build = "build"
-nsis_bin = '"c:\Program Files\NSIS\makensis.exe"'
+#nsis_bin = '"c:\Program Files\NSIS\makensis.exe"'
+nsis_bin = '"/usr/bin/makensis"'
 instlux_ico = "instlux.ico"
 instlux_logo = "instlux_logo.bmp"
 grub4dos = "grldr"
 
 def copy_from_src_to_build( build, file ):
-	listdir = os.listdir( build )
+	listdir = remove_svn_dirs( os.listdir( build ) )
 	if file not in listdir:
 		input = open("src"+os.sep+file, "rb")
 		output = open( build+os.sep+file, "wb")
@@ -26,21 +38,21 @@ def copy_from_src_to_build( build, file ):
 		input.close()
 
 def create_build_dirs( build, languages, instlux_ico, instlux_logo, grub4dos):
-    listdirs = os.listdir(".")
+    listdirs = remove_svn_dirs( os.listdir(".") )
     if "bin" not in listdirs:
         os.mkdir( "bin" )
-    listdirs = os.listdir(".")
+    listdirs = remove_svn_dirs( os.listdir(".") )
     if build not in listdirs:
         os.mkdir( build )
 
-    listdirs = os.listdir( build )
+    listdirs = remove_svn_dirs( os.listdir( build ) )
     if "translations" not in listdirs:
         os.mkdir( build+os.sep+"translations" )
 
     if "bin" not in listdirs:
         os.mkdir( build+os.sep+"bin" )
 
-    listdirs = os.listdir( build+os.sep+"translations" )
+    listdirs = remove_svn_dirs( os.listdir( build+os.sep+"translations" ) )
     for language in languages:
         if language not in listdirs:
             os.mkdir( build+os.sep+"translations"+os.sep+language )
@@ -69,10 +81,11 @@ def get_customizations( kernels, build):
 		append_ide = kernel["append_ide"]
 		append_sata = kernel["append_sata"]
 		for dirpath, dirnames, filenames in os.walk( dir ):
-			dirpath_formated = dirpath.replace("/","\\").replace( build+os.sep,"")
-			list_of_files_string = list_of_files_string+"   SetOutPath $INSTDIR\\"+dirpath_formated+"\n"
-			for file in filenames:
-				list_of_files_string = list_of_files_string+"   File \"..\\"+dirpath_formated+"\\"+file+"\"\n"
+			if dirpath.find('.svn')==-1:
+				dirpath_formated = dirpath.replace("/","\\").replace( build+os.sep,"")
+				list_of_files_string = list_of_files_string+"   SetOutPath $INSTDIR\\"+dirpath_formated+"\n"
+				for file in filenames:
+					list_of_files_string = list_of_files_string+"   File \"..\\"+dirpath_formated+"\\"+file+"\"\n"
 		customizations.append({"FILENAME":name+".nsi","NAME":name,"OUTFILE":name+".exe", "CAPTION":caption, "MENU_TITLE":caption, "KERNEL":dir_out+"/"+kernel["kernel"], "DRIVERS":dir_out+"/"+kernel["drivers"], "LIST_OF_FILES":list_of_files_string, "BOOT_TITLE":caption, "OUTPATH":dir_out, "APPEND_IDE":append_ide, "APPEND_SATA":append_sata})
 	return customizations;
 
