@@ -93,6 +93,9 @@ var /GLOBAL c
 Function .onInit
 	# the plugins dir is automatically deleted when the installer exits
 	InitPluginsDir
+	#get default language
+	#System::Call kernel32::GetSystemDefaultLangID()i.a
+	
 	${GetRoot} $WINDIR $c
 	StrCpy $INSTDIR "$c"
 	File /oname=$PLUGINSDIR\splash.bmp "instlux_logo.bmp"
@@ -103,6 +106,8 @@ Function .onInit
 
 	Pop $0 ; $0 has '1' if the user closed the splash screen early,
 			; '0' if everything closed normally, and '-1' if some error occurred.
+	LANGUAGE_SELECTION_DIALOG
+	
 FunctionEnd
 
 InstallDir "$c\"

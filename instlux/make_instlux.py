@@ -107,35 +107,28 @@ def create_one_nsis_file_for_distro( customizations,  build ):
 
 def get_translations( languages, linuxes):
 	translations = {}
-	for language in languages:
-		if not translations.has_key( language ):
-			translations[ language ] = []
-		for linux in linuxes:
-			translations[ language ].append([linux+"_en",linux+language])
-			translations[ language ].append(["English",language])
-			translations[ language ].append(["license_en.txt","translations\\"+language+"\\license_"+language+".txt"])
-	for language in languages:
-		try:
-			filename = "translations"+os.sep+language+os.sep+"translations_"+language+".txt"
-			f = open( filename, "r")
-			print language+" translations"
-			for line in f.readlines():
-				double_quotes_pos = line.find( "\"" )
-				if double_quotes_pos != -1:
-					double_quotes_pos_next = line[double_quotes_pos+1:].find( "\"" )
-					if double_quotes_pos_next != -1:
-						double_quotes_pos_next = double_quotes_pos_next+double_quotes_pos+2
-						key = line[double_quotes_pos:double_quotes_pos_next]
-						double_quotes_pos = line[double_quotes_pos_next+1:].find( "\"")
-						if double_quotes_pos != -1:
-							double_quotes_pos = double_quotes_pos_next+1+double_quotes_pos
-							double_quotes_pos_next = line[double_quotes_pos+1:].find( "\"")
-							if double_quotes_pos_next != -1:
-								double_quotes_pos_next = double_quotes_pos_next+double_quotes_pos+2
-								value = line[double_quotes_pos:double_quotes_pos_next]
-								translations[ language ].append( [key, value] )
-		except:
-			print "warning: translations for "+language+" not found in "+filename
+	translations[ 'All' ] = []
+	
+	for linux in linuxes:
+		translations[ 'All' ].append([linux+"_en",linux])
+		mui_languages = ""
+		licenses = ""
+		language_selection_dialog="      ;Language selection dialog\n"
+		language_selection_dialog+="     Push \"\"\n"
+		for language in languages:
+			mui_languages+="  !insertmacro MUI_LANGUAGE \""+language+"\"\n"
+			licenses+="  !insertmacro MUI_PAGE_LICENSE \""+"translations\\"+language+"\\license_"+language+".txt"+"\"\n"
+			language_selection_dialog+="     Push ${LANG_"+language.upper()+"}\n     Push "+language+"\n"
+		language_selection_dialog+="     Push A ; A means auto count languages\n"
+		language_selection_dialog+="     ; for the auto count to work the first empty push (Push "") must remain"
+		language_selection_dialog+="     LangDLL::LangDialog \"Installer Language\" \"Please select the language of the installer\""
+		language_selection_dialog+="     Pop $LANGUAGE\n"
+		language_selection_dialog+="     StrCmp $LANGUAGE \"cancel\" 0 +2\n"
+		language_selection_dialog+="     Abort"
+		translations[ 'All' ].append(["  !insertmacro MUI_LANGUAGE \"English\"",mui_languages])
+		translations[ 'All' ].append(["  !insertmacro MUI_PAGE_LICENSE \"license_en.txt\"",licenses])
+		translations[ 'All' ].append(["LANGUAGE_SELECTION_DIALOG", language_selection_dialog])
+
 	return translations;
 
 def translate(input_file_name, output_file_name, translations):
