@@ -73,7 +73,7 @@
 ;Pages
 
   !insertmacro MUI_PAGE_WELCOME
-  !insertmacro MUI_PAGE_LICENSE "license_en.txt"
+  !insertmacro MUI_PAGE_LICENSE "translations/english/license_english.txt"
   !insertmacro MUI_PAGE_INSTFILES
   !insertmacro MUI_PAGE_FINISH    
   !insertmacro MUI_UNPAGE_CONFIRM
@@ -93,8 +93,6 @@ var /GLOBAL c
 Function .onInit
 	# the plugins dir is automatically deleted when the installer exits
 	InitPluginsDir
-	#get default language
-	#System::Call kernel32::GetSystemDefaultLangID()i.a
 	
 	${GetRoot} $WINDIR $c
 	StrCpy $INSTDIR "$c"
@@ -106,7 +104,7 @@ Function .onInit
 
 	Pop $0 ; $0 has '1' if the user closed the splash screen early,
 			; '0' if everything closed normally, and '-1' if some error occurred.
-	LANGUAGE_SELECTION_DIALOG
+	!insertmacro MUI_LANGDLL_DISPLAY
 	
 FunctionEnd
 
