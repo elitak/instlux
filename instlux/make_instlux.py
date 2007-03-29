@@ -4,12 +4,12 @@ import os
 import sys
 
 def remove_svn_dirs( dirs ):
-	dirs_without_svn = []
-	for dir in dirs:
-		if dir.find('.svn')==-1:
-			dirs_without_svn.append( dir )
-	
-	return dirs_without_svn
+  dirs_without_svn = []
+  for dir in dirs:
+    if dir.find('.svn')==-1:
+      dirs_without_svn.append( dir )
+  
+  return dirs_without_svn
 
 #kernels = [ {"distribution":"Linkat","version":"1.0","media":"CDROM","kernel":"LINUX2","drivers":"INITRD2","append":"root=/dev/hdc devfs=mount,dall ramdisk_size=65536"}]
 kernels = [ {"distribution":"OpenSuSE","version":"10.2","media":"NET","kernel":"linux","drivers":"initrd","append_ide":"devfs=mount,dall ramdisk_size=65536 install=http:opensuse/distribution/10.2/repo/oss server=155.210.39.56","append_sata":"devfs=mount,dall ramdisk_size=65536 install=http:opensuse/distribution/10.2/repo/oss server=155.210.39.56"}]
@@ -28,14 +28,14 @@ instlux_logo = "instlux_logo.bmp"
 grub4dos = "grldr"
 
 def copy_from_src_to_build( build, file ):
-	listdir = remove_svn_dirs( os.listdir( build ) )
-	if file not in listdir:
-		input = open("src"+os.sep+file, "rb")
-		output = open( build+os.sep+file, "wb")
-		output.write( input.read() )
-		output.flush()
-		output.close()
-		input.close()
+  listdir = remove_svn_dirs( os.listdir( build ) )
+  if file not in listdir:
+    input = open("src"+os.sep+file, "rb")
+    output = open( build+os.sep+file, "wb")
+    output.write( input.read() )
+    output.flush()
+    output.close()
+    input.close()
 
 def create_build_dirs( build, languages, instlux_ico, instlux_logo, grub4dos):
     listdirs = remove_svn_dirs( os.listdir(".") )
@@ -62,32 +62,32 @@ def create_build_dirs( build, languages, instlux_ico, instlux_logo, grub4dos):
   
 
 def get_linuxes( kernels ):
-	linuxes=[];
-	for kernel in kernels:
-		version = kernel["version"].replace(".","_")
-		name = kernel["media"]+kernel["distribution"]+version+"_en"
-		linuxes = linuxes+[name.replace("_en","")]
-	return linuxes;
+  linuxes=[];
+  for kernel in kernels:
+    version = kernel["version"].replace(".","_")
+    name = kernel["media"]+kernel["distribution"]+version+"_en"
+    linuxes = linuxes+[name.replace("_en","")]
+  return linuxes;
 
 def get_customizations( kernels, build):
-	customizations = []
-	for kernel in kernels:
-		version = kernel["version"].replace(".","_")
-		name = "instlux"+kernel["media"]+kernel["distribution"]+version+"_en"
-		caption = kernel["distribution"]+" "+kernel["version"]+" installer"
-		list_of_files_string =""
-		dir_out = name.replace("_en","")
-		dir = "distros"+os.sep+dir_out
-		append_ide = kernel["append_ide"]
-		append_sata = kernel["append_sata"]
-		for dirpath, dirnames, filenames in os.walk( dir ):
-			if dirpath.find('.svn')==-1:
-				dirpath_formated = dirpath.replace("/","\\").replace( build+os.sep,"")
-				list_of_files_string = list_of_files_string+"   SetOutPath $INSTDIR\\"+dirpath_formated+"\n"
-				for file in filenames:
-					list_of_files_string = list_of_files_string+"   File \"..\\"+dirpath_formated+"\\"+file+"\"\n"
-		customizations.append({"FILENAME":name+".nsi","NAME":name,"OUTFILE":name+".exe", "CAPTION":caption, "MENU_TITLE":caption, "KERNEL":dir_out+"/"+kernel["kernel"], "DRIVERS":dir_out+"/"+kernel["drivers"], "LIST_OF_FILES":list_of_files_string, "BOOT_TITLE":caption, "OUTPATH":dir_out, "APPEND_IDE":append_ide, "APPEND_SATA":append_sata})
-	return customizations;
+  customizations = []
+  for kernel in kernels:
+    version = kernel["version"].replace(".","_")
+    name = "instlux"+kernel["media"]+kernel["distribution"]+version+"_en"
+    caption = kernel["distribution"]+" "+kernel["version"]+" installer"
+    list_of_files_string =""
+    dir_out = name.replace("_en","")
+    dir = "distros"+os.sep+dir_out
+    append_ide = kernel["append_ide"]
+    append_sata = kernel["append_sata"]
+    for dirpath, dirnames, filenames in os.walk( dir ):
+      if dirpath.find('.svn')==-1:
+        dirpath_formated = dirpath.replace("/","\\").replace( build+os.sep,"")
+        list_of_files_string = list_of_files_string+"   SetOutPath $INSTDIR\\"+dirpath_formated+"\n"
+        for file in filenames:
+          list_of_files_string = list_of_files_string+"   File \"..\\"+dirpath_formated+"\\"+file+"\"\n"
+    customizations.append({"FILENAME":name+".nsi","NAME":name,"OUTFILE":name+".exe", "CAPTION":caption, "MENU_TITLE":caption, "KERNEL":dir_out+"/"+kernel["kernel"], "DRIVERS":dir_out+"/"+kernel["drivers"], "LIST_OF_FILES":list_of_files_string, "BOOT_TITLE":caption, "OUTPATH":dir_out, "APPEND_IDE":append_ide, "APPEND_SATA":append_sata})
+  return customizations;
 
 def create_one_nsis_file_for_distro( customizations,  build ):
     template_file = open( "src"+os.sep+"instlux_template_en.nsi", "r" )
@@ -106,30 +106,16 @@ def create_one_nsis_file_for_distro( customizations,  build ):
 
 
 def get_translations( languages, linuxes):
-	translations = {}
-	translations[ 'All' ] = []
-	
-	for linux in linuxes:
-		translations[ 'All' ].append([linux+"_en",linux])
-		mui_languages = ""
-		licenses = ""
-		language_selection_dialog="      ;Language selection dialog\n"
-		language_selection_dialog+="     Push \"\"\n"
-		for language in languages:
-			mui_languages+="  !insertmacro MUI_LANGUAGE \""+language+"\"\n"
-			licenses+="  !insertmacro MUI_PAGE_LICENSE \""+"translations\\"+language+"\\license_"+language+".txt"+"\"\n"
-			language_selection_dialog+="     Push ${LANG_"+language.upper()+"}\n     Push "+language+"\n"
-		language_selection_dialog+="     Push A ; A means auto count languages\n"
-		language_selection_dialog+="     ; for the auto count to work the first empty push (Push "") must remain"
-		language_selection_dialog+="     LangDLL::LangDialog \"Installer Language\" \"Please select the language of the installer\""
-		language_selection_dialog+="     Pop $LANGUAGE\n"
-		language_selection_dialog+="     StrCmp $LANGUAGE \"cancel\" 0 +2\n"
-		language_selection_dialog+="     Abort"
-		translations[ 'All' ].append(["  !insertmacro MUI_LANGUAGE \"English\"",mui_languages])
-		translations[ 'All' ].append(["  !insertmacro MUI_PAGE_LICENSE \"license_en.txt\"",licenses])
-		translations[ 'All' ].append(["LANGUAGE_SELECTION_DIALOG", language_selection_dialog])
-
-	return translations;
+  translations = {}
+  translations[ 'All' ] = []
+  
+  for linux in linuxes:
+    translations[ 'All' ].append([linux+"_en",linux])
+    mui_languages = ""
+    for language in languages:
+      mui_languages+="  !insertmacro MUI_LANGUAGE \""+language+"\"\n"    
+    translations[ 'All' ].append(["  !insertmacro MUI_LANGUAGE \"English\"",mui_languages])
+  return translations;
 
 def translate(input_file_name, output_file_name, translations):
     input_file=open( input_file_name, "r")
@@ -146,27 +132,27 @@ def translate(input_file_name, output_file_name, translations):
     input_file.close()
 
 def create_all_nsis( translations, linuxes, build):
-	for language,values in translations.iteritems():
-		for linux in linuxes:
-			input_file_name = build+os.sep+"instlux"+linux+"_en.nsi"
-			output_file_name = build+os.sep+"instlux"+linux+"_"+language+".nsi"
-			translate( input_file_name, output_file_name, values)
-			
+  for language,values in translations.iteritems():
+    for linux in linuxes:
+      input_file_name = build+os.sep+"instlux"+linux+"_en.nsi"
+      output_file_name = build+os.sep+"instlux"+linux+"_"+language+".nsi"
+      translate( input_file_name, output_file_name, values)
+      
 def compile_nsis( translations, linuxes, build, nsis_bin):
-	for language,values in translations.iteritems():
-		for linux in linuxes:
-			file_name = build+os.sep+"instlux"+linux+"_"+language+".nsi"
-			command = nsis_bin+" "+file_name
-			os.system( command )
+  for language,values in translations.iteritems():
+    for linux in linuxes:
+      file_name = build+os.sep+"instlux"+linux+"_"+language+".nsi"
+      command = nsis_bin+" "+file_name
+      os.system( command )
 
 def create_translated_licenses ( languages, build, list_of_contributors):
-	for language in languages:
-		f_orig = open( "translations"+os.sep+language+os.sep+"license_"+language+".txt", "r")
-		f_dest = open( build+os.sep+"translations"+os.sep+language+os.sep+"license_"+language+".txt", "w")
-		f_dest.write( f_orig.read().replace( "LIST_OF_CONTRIBUTORS", list_of_contributors ) )
-		f_dest.flush()
-		f_dest.close()
-		f_orig.close()
+  for language in languages:
+    f_orig = open( "translations"+os.sep+language+os.sep+"license_"+language+".txt", "r")
+    f_dest = open( build+os.sep+"translations"+os.sep+language+os.sep+"license_"+language+".txt", "w")
+    f_dest.write( f_orig.read().replace( "LIST_OF_CONTRIBUTORS", list_of_contributors ) )
+    f_dest.flush()
+    f_dest.close()
+    f_orig.close()
 
 
 create_build_dirs(  build, languages, instlux_ico, instlux_logo, grub4dos )
