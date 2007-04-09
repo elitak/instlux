@@ -173,7 +173,7 @@ Section "Install"
 
   FileOpen $MenuLSTFile $c\menu.lst w
   FileWrite $MenuLSTFile "title MENU_TITLE $\r$\n"
-  FileWrite $MenuLSTFile "find --set-root /ntldr$\r$\n"
+  FileWrite $MenuLSTFile "find --set-root /autoexec.bat$\r$\n"
   FileWrite $MenuLSTFile "kernel   /distros/KERNEL KRNL_APPEND$\r$\n"
   FileWrite $MenuLSTFile "initrd   /distros/DRIVERS$\r$\n"
   FileSeek $MenuLSTFile 0 END
