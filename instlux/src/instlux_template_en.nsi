@@ -18,7 +18,7 @@
 ;                  linux. Next time you boot windows, the boot.ini will be restored.
 ;
 ; Author: Jordi Massaguer i Pla <jordimassaguerpla _ yahoo _ es>
-; Contributions: Using "GetRoot" instead of "c:\" has been copied from the project "goodbye microsoft" from Robert Millan
+; Contributions: Using "GetRoot" instead of "c:\" has been adapted from the project "goodbye microsoft" from Robert Millan
 ;                Using a license for each language has been contributed by Daniel Pedigo
 ;                Detecting whether it is running on a Windows16 bits or Windows32 bits has been contributed by Daniel Pedigo
 ;                Installing grub.exe and configuring boot.ini on windows98 has been contributed by Daniel Pedigo
@@ -171,7 +171,7 @@ Section "Install"
   
   lbl_Common:
 
-  FileOpen $MenuLSTFile $c\menu.lst w
+  FileOpen $MenuLSTFile $c\menu.lst a
   FileWrite $MenuLSTFile "title MENU_TITLE $\r$\n"
   FileWrite $MenuLSTFile "find --set-root /autoexec.bat$\r$\n"
   FileWrite $MenuLSTFile "kernel   /distros/KERNEL KRNL_APPEND$\r$\n"
