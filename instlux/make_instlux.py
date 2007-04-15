@@ -12,7 +12,8 @@ def remove_svn_dirs( dirs ):
   return dirs_without_svn
 
 #kernels = [ {"distribution":"Linkat","version":"1.0","media":"CDROM","kernel":"LINUX2","drivers":"INITRD2","append":"root=/dev/hdc devfs=mount,dall ramdisk_size=65536"}]
-kernels = [ {"distribution":"OpenSuSE","version":"10.2","media":"NET","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536 install=http:opensuse/distribution/10.2/repo/oss server=155.210.39.56"}]
+kernels = [ {"distribution":"OpenSuSE","version":"10.3","media":"NET","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536 install=http:pub/opensuse/distribution/SL-OSS-Factory/inst-source server=195.135.221.134"},{"distribution":"OpenSuSE","version":"10.3","media":"CDROM","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536"}]
+kernels = [ {"distribution":"OpenSuSE_x86_64_","version":"10.3","media":"NET","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536 install=http:pub/opensuse/distribution/SL-OSS-Factory/inst-source server=195.135.221.134"},{"distribution":"OpenSuSE_x86_64_","version":"10.3","media":"CDROM","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536"}]
 languages = []
 languages = remove_svn_dirs( os.listdir("translations")) 
 #languages = ["english"]
@@ -86,7 +87,7 @@ def get_customizations( kernels, build):
         list_of_files_string = list_of_files_string+"   SetOutPath $INSTDIR\\"+dirpath_formated+"\n"
         for file in filenames:
           list_of_files_string = list_of_files_string+"   File \"..\\"+dirpath_formated+"\\"+file+"\"\n"
-    customizations.append({"FILENAME":name+".nsi","NAME":name,"OUTFILE":name+".exe", "CAPTION":caption, "MENU_TITLE":caption, "KERNEL":dir_out+"/"+kernel["kernel"], "DRIVERS":dir_out+"/"+kernel["drivers"], "LIST_OF_FILES":list_of_files_string, "BOOT_TITLE":caption, "OUTPATH":dir_out, "KERNEL_APPEND":kernel_append})
+    customizations.append({"FILENAME":name+".nsi","NAME":name,"OUTFILE":name+".exe", "CAPTION":caption, "MENU_TITLE":caption, "KERNEL":dir_out+"/"+kernel["kernel"], "DRIVERS":dir_out+"/"+kernel["drivers"], "LIST_OF_FILES":list_of_files_string, "BOOT_TITLE":caption, "OUTPATH":dir_out, "KRNL_APPEND":kernel_append})
   return customizations;
 
 def create_one_nsis_file_for_distro( customizations,  build ):
