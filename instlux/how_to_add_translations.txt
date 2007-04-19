@@ -1,0 +1,62 @@
+Translations on instlux are mainly based on the following:
+
+Requeriments:
+
+1- NSIS installer is translated
+2- There is a GPL license translated
+
+If nsis is not translated, contribute to nsis with them.
+
+At the free software foundation you can find some gpl license translations you can base your translations on.
+
+3- If nsis is translated, and the gpl license, too, then you will need to translate the senteces
+ "install Ubuntu" 
+ "Ubuntu installer" 
+ "Author: Jordi Massaguer Pla"
+ "Contributors:"
+ "People listed here has contributed to instlux, either by code, by sending feedback or by promoting."
+ "If you think you should be listed here, write an email to jordimassaguerpla [[at the site ]] yahoo [[at the domain]] es."
+
+4- the instlux sources 
+
+5- Python 2.4
+
+6- nsis 2.10
+
+Process:
+
+
+Once you have all the requirements, make a folder into the translations folder with the name of your language. That should be
+the name used in nsis (very important).
+Then, copy the license there with the name license_language (being language the name of the folder)
+After that, edit the license, add the line "Instlux, Copyright (C) 2005-2006 Jordi Massaguer Pla" at the beginning, followed
+by the translation of
+ "
+ Contributors:
+ People listed here has contributed to instlux, either by code, by sending feedback or by promoting.
+ If you think you should be listed here, write an email to jordimassaguerpla@yahoo.es.
+" 
+and then the sentence "LIST_OF_CONTRIBUTORS" (do not translate this, as it will be replaced by the list of contributors).
+then create a file called "translations_language", being language your language, add write the translations of 
+"install Ubuntu"
+"Ubuntu installer"
+
+then, make a folder into nsis_translated/translations with the name of your language.
+
+Finally, run the make_instlux.py script.
+
+Test:
+
+If all run Ok, you will have instlux translated into bin directory.
+
+And that will be all!
+
+Then, contact the administrator (jordimassaguerpla [[at the site ]] yahoo [[at the domain]] es)
+
+Thanks for your interest!
+
+Localizing free software is very important for making free software get to as many people as possible. 
+It would be great to have instlux translated into more languages!
+
+jordi massaguer pla
+

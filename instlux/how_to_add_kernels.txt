@@ -1,0 +1,38 @@
++++ Requirements:
+
+ 1.- you need python installed ( I am using version 2.5 on linux). You can download it from www.python.org.
+
+ 2.- you need nsis installed ( I am using version 2.18. ). You can download 
+it from nsis.sourceforge.net.
+
+ 3.- You can program either on windows or on linux.
+
+ 4.- A text editor. I am using eclipse with some plugins for subversion and python development. If you program on windows you can try the nsis plugin for eclipse.
+
+ 5.- A windows installation in order to test it.
+
+ 6.- The instlux source code (download it from the sourceforge pages).
+
++++ Adding your kernel
+
+Instlux is based on marc herbert's page: http://marc.herbert.free.fr/linux/win2linstall.html. You can find more information on his page.
+
+ To sum it up, what instlux does is to install grub.exe (win98) or grldr (winxp) and store the kernel and the initial ram file system (initrd) into the windows partition, so that grub can boot using them. Also, some kernel parameters can be appended at the grub configuration.
+
+ All that is implemented as an nsis installer.
+
+ In order to make it easy to add more kernels, a python script has been implemented that automates the building of the nsis installer.
+
+ This script, called make_instlux, gets an instlux nsis template and writes the distribution specific one, depending on the values of a variable, and compiles it.
+
+ So that, the only thing you have to do, is to edit the script make_instlux with your distribution values.
+
+ Then, run the script and test it (please, do not send it to me without testing it before!).
+
+ Basically, what you have to provide is the distribution name, the kernel (usually vmlinuz or linux) and the initial ram disk (initrd or initrd.gz, usually). Those files will be copied from a folder named instluxMEDIAdistro (for example instluxNETUbuntu5_10) at the src directory.
+
+Then, contact the administrator (jordimassaguerpla [[at the site ]] yahoo [[at the domain]] es)
+
+Thanks for your interest on instlux and have fun!
+
+jordi massaguer pla 
