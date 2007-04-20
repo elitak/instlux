@@ -18,7 +18,12 @@ languages = remove_svn_dirs( os.listdir("translations"))
 #languages = ["english"]
 
 #2007-01-07
-list_of_contributors = "Greg Johnston\nMichael\nMarc Herbert\nPiarres beobide\nsesammases\nbalu_kalla\nnumatrix\nnotable\nJimmyGoon\nfra1027\nrev pete moss\nRajesh\nHeath\nAMCDeathKnight\nRobin Patt-Corner\ncarsten\nTonA\ntomtenberge\nJack Chen\nKevin\nTim\nDaveW\nBhasadu\nMarcoAurelio\nEl Paco\nkkkkk\nDan\nAas\nmetallicgreenb\nGrymyrk\nATB\nEmanuel Levy\nindygo\npetrbok\nVati-Khan\noffdutyBorg\nalicia_sb\nSam Johnston\nHarryhe\ntotro2\nHenrik Brink"
+list_of_contributors = ""
+f = open("list_of_contributors.txt", "r")
+for line in f.readlines():
+	list_of_contributors += line+" ," 
+	
+f.close()
 
 build = "build"
 #nsis_bin = '"c:\Program Files\NSIS\makensis.exe"'
