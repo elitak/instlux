@@ -23,6 +23,7 @@
 ;                Detecting whether it is running on a Windows16 bits or Windows32 bits has been contributed by Daniel Pedigo
 ;                Installing grub.exe and configuring boot.ini on windows98 has been contributed by Daniel Pedigo
 ;                A way for grub to load the kernel even when its not (0,0) has been contributed by Daniel Pedigo
+;				 Daniel Gollub and Sascha Sommer has contributed with some other improvements
 ;
 ;    Copyright (C) 2005  Jordi Massaguer i Pla
 
@@ -100,6 +101,9 @@
 var c
 var ConfigSYS
 var MenuLSTFile
+var HitMeFile
+var Resolution
+var LangParam
 
 Function .onInit
 	# the plugins dir is automatically deleted when the installer exits
@@ -170,11 +174,71 @@ Section "Install"
   Goto lbl_Common
   
   lbl_Common:
+  FileOpen $HitMeFile $c\instlux_hitme.txt a 
+  FileWrite $HitMeFile "This file was created by instlux."
+  FileSeek $HitMeFile 0 END
+  FileClose $HitMeFile
+# TODO add all avaliable languages
+  StrCmp $LANGUAGE ${LANG_ENGLISH} 0 +2
+    StrCpy $LangParam "en"
+  StrCmp $LANGUAGE ${LANG_DUTCH} 0 +2
+    StrCpy $LangParam "da"
+  StrCmp $LANGUAGE ${LANG_FRENCH} 0 +2
+    StrCpy $LangParam "fr"
+  StrCmp $LANGUAGE ${LANG_GERMAN} 0 +2
+    StrCpy $LangParam "de"
+#  StrCmp $LANGUAGE ${LANG_KOREAN} 0 +2
+#     StrCpy $LangParam "cr"
+#  StrCmp $LANGUAGE ${LANG_RUSSIAN} 0 +2
+#    StrCpy $LangParam "ru"
+  StrCmp $LANGUAGE ${LANG_SPANISH} 0 +2
+    StrCpy $LangParam "es"
+  StrCmp $LANGUAGE ${LANG_SWEDISH} 0 +2
+    StrCpy $LangParam "se"
+#  StrCmp $LANGUAGE ${LANG_TRADCHINESE} 0 +2
+#    StrCpy $LangParam "zh_TW"
+#  StrCmp $LANGUAGE ${LANG_SIMPCHINESE} 0 +2
+#    StrCpy $LangParam "zh_CN"
+#  StrCmp $LANGUAGE ${LANG_SLOVAK} 0 +2
+#    StrCpy $LangParam "sk"
+  # http://nsis.sourceforge.net/System_plug-in <--- requires
+  System::Call 'user32::GetSystemMetrics(i 0) i .r0'
+  System::Call 'user32::GetSystemMetrics(i 1) i .r1'
+  # 64k |  0x311    0x314    0x317    0x31A
+  IntCmp $0 640 is640 isUnknow 0
+  IntCmp $0 800 is800
+  IntCmp $0 1024 is1024
+  IntCmp $0 1280 is1280 0 is1280 
 
+  isUnknow:
+    StrCpy $Resolution "normal"
+  Goto writeMenu 
+     	
+  is640:
+    StrCpy $Resolution "0x311"
+  Goto writeMenu  
+
+  is800:
+    StrCpy $Resolution "0x314"
+  Goto writeMenu
+
+  is1024:
+    StrCpy $Resolution "0x317"
+  Goto writeMenu  
+
+  is1280:
+    StrCpy $Resolution "0x31A"
+  Goto writeMenu  
+
+
+  writeMenu:
   FileOpen $MenuLSTFile $c\menu.lst a
+  FileWrite $MenuLSTFile "hiddenmenu $\r$\n"
+  FileWrite $MenuLSTFile "timeout 0 $\r$\n"
+
   FileWrite $MenuLSTFile "title MENU_TITLE $\r$\n"
-  FileWrite $MenuLSTFile "find --set-root /autoexec.bat$\r$\n"
-  FileWrite $MenuLSTFile "kernel   /distros/KERNEL KRNL_APPEND$\r$\n"
+  FileWrite $MenuLSTFile "find --set-root /instlux_hitme.txt$\r$\n"
+  FileWrite $MenuLSTFile "kernel   /distros/KERNEL KRNL_APPEND lang=$LangParam vga=$Resolution splash=silent$\r$\n"
   FileWrite $MenuLSTFile "initrd   /distros/DRIVERS$\r$\n"
   FileSeek $MenuLSTFile 0 END
   FileClose $MenuLSTFile
@@ -221,6 +285,7 @@ Section "Uninstall"
   lbl_Finish:
     RMDir /REBOOTOK /r "$c\distros\OUTPATH"
     Delete /REBOOTOK "$c\menu.lst"
+    Delete /REBOOTOK "$c\instlux_hitme.txt"
     Delete /REBOOTOK "$SMSTARTUP\instlux-uninst.exe"
   
 SectionEnd
