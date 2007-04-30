@@ -12,9 +12,10 @@ def remove_svn_dirs( dirs ):
   return dirs_without_svn
 
 #kernels = [ {"distribution":"Linkat","version":"1.0","media":"CDROM","kernel":"LINUX2","drivers":"INITRD2","append":"root=/dev/hdc devfs=mount,dall ramdisk_size=65536"}]
-kernels = [ {"distribution":"OpenSuSE","version":"10.3","media":"NET","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536 install=http:pub/opensuse/distribution/SL-OSS-factory/inst-source/ server=195.135.221.130"},{"distribution":"OpenSuSE","version":"10.3","media":"CDROM","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536"}, {"distribution":"OpenSuSE_x86_64_","version":"10.3","media":"NET","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536 install=http:distribution/SL-OSS-factory/inst-source/ server=195.135.221.130"},{"distribution":"OpenSuSE_x86_64_","version":"10.3","media":"CDROM","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536"}]
-languages = []
-languages = remove_svn_dirs( os.listdir("translations")) 
+#kernels = [ {"distribution":"OpenSuSE","version":"10.3","media":"NET","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536 install=http:pub/opensuse/distribution/SL-OSS-factory/inst-source/ server=195.135.221.130"},{"distribution":"OpenSuSE","version":"10.3","media":"CDROM","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536"}, {"distribution":"OpenSuSE_x86_64_","version":"10.3","media":"NET","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536 install=http:distribution/SL-OSS-factory/inst-source/ server=195.135.221.130"},{"distribution":"OpenSuSE_x86_64_","version":"10.3","media":"CDROM","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536"}]
+kernels = [ {"distribution":"Linkat","version":"1.1","media":"CDROM","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536"}]
+languages = ["catalan"]
+#languages = remove_svn_dirs( os.listdir("translations")) 
 #languages = ["english"]
 
 #2007-01-07
@@ -27,7 +28,7 @@ f.close()
 
 build = "build"
 #nsis_bin = '"c:\Program Files\NSIS\makensis.exe"'
-nsis_bin = '"/usr/bin/makensis"'
+nsis_bin = '"makensis"'
 instlux_ico = "instlux.ico"
 instlux_logo = "instlux_logo.bmp"
 grub4dos = ["grldr","grub.exe"]
@@ -123,6 +124,8 @@ def get_translations( languages, linuxes):
       mui_translated_licenses += "  LicenseLangString license ${LANG_"+language.upper()+"} \"translations/"+language+"/license_"+language+".txt\"\n"
     translations[ 'All' ].append(["  !insertmacro MUI_LANGUAGE \"English\"",mui_languages])
     translations[ 'All' ].append(["  LicenseLangString license ${LANG_ENGLISH} \"translations/english/license_english.txt\"",mui_translated_licenses])
+    if (len(languages)<2):
+    	translations[ 'All' ].append(["!insertmacro MUI_LANGDLL_DISPLAY","#!insertmacro MUI_LANGDLL_DISPLAY"])
   return translations;
 
 def translate(input_file_name, output_file_name, translations):
