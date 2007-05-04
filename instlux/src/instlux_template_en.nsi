@@ -266,6 +266,11 @@ Section "Install"
 
   FileWrite $MenuLSTFile "title MENU_TITLE $\r$\n"
   FileWrite $MenuLSTFile "find --set-root /instlux_hitme.txt$\r$\n"
+
+  ; TODO: vga value is not distribution independet. 
+  ; Debian installer use "vga=vesafb..." as vga value.
+  ; openSUSE is using only resolution codes.
+  ; What about other distros?
   FileWrite $MenuLSTFile "kernel   /distros/KERNEL KRNL_APPEND lang=$LangParam vga=$Resolution$\r$\n"
   FileWrite $MenuLSTFile "initrd   /distros/DRIVERS$\r$\n"
   FileSeek $MenuLSTFile 0 END
