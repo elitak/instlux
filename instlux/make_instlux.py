@@ -12,17 +12,24 @@ def remove_svn_dirs( dirs ):
   return dirs_without_svn
 
 #kernels = [ {"distribution":"Linkat","version":"1.0","media":"CDROM","kernel":"LINUX2","drivers":"INITRD2","append":"root=/dev/hdc devfs=mount,dall ramdisk_size=65536"}]
-kernels = [ {"distribution":"OpenSuSE","version":"10.3","media":"NET","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536 install=http:pub/opensuse/distribution/SL-OSS-factory/inst-source/ server=195.135.221.130"},{"distribution":"OpenSuSE","version":"10.3","media":"CDROM","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536"}, {"distribution":"OpenSuSE_x86_64_","version":"10.3","media":"NET","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536 install=http:distribution/SL-OSS-factory/inst-source/ server=195.135.221.130"},{"distribution":"OpenSuSE_x86_64_","version":"10.3","media":"CDROM","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536"}]
 #kernels = [ {"distribution":"Linkat","version":"1.1","media":"CDROM","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536"}]
-languages = ["catalan"]
-#languages = remove_svn_dirs( os.listdir("translations")) 
+
+kernels = [ 
+	{"distribution":"openSUSE","version":"10.3","media":"NET","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536 splash=silent install=http:distribution/SL-OSS-factory/inst-source/ server=download.opensuse.org"},
+	{"distribution":"openSUSE","version":"10.3","media":"CDROM","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall splash=silent ramdisk_size=65536"}, 
+#	{"distribution":"openSUSE_x86_64_","version":"10.3","media":"NET","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536 install=http:distribution/SL-OSS-factory/inst-source/ server=download.opensuse.org"},
+#	{"distribution":"openSUSE_x86_64_","version":"10.3","media":"CDROM","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536"}
+	]
+
+#languages = ["catalan"]
 #languages = ["english"]
+languages = remove_svn_dirs( os.listdir("translations")) 
 
 #2007-01-07
 list_of_contributors = ""
 f = open("list_of_contributors.txt", "r")
 for line in f.readlines():
-	list_of_contributors += line+" ," 
+	list_of_contributors += line 
 	
 f.close()
 
@@ -31,7 +38,7 @@ build = "build"
 nsis_bin = '"makensis"'
 instlux_ico = "instlux.ico"
 instlux_logo = "instlux_logo.bmp"
-grub4dos = ["grldr","grub.exe"]
+grub4dos = ["grldr","grldr.mbr","grub.exe"]
 
 def copy_from_src_to_build( build, file ):
   listdir = remove_svn_dirs( os.listdir( build ) )
@@ -174,7 +181,4 @@ create_one_nsis_file_for_distro( customizations, build )
 create_translated_licenses ( languages, build, list_of_contributors)
 create_all_nsis( translations, linuxes, build)
 compile_nsis( translations, linuxes, build, nsis_bin)
-
-
-
 

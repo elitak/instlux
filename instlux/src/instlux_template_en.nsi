@@ -60,7 +60,6 @@
   !include FileFunc.nsh ; GetRoot / un.GetRoot
   !insertmacro GetRoot
   !insertmacro un.GetRoot
-  BGGradient f8e409  
 
   !define MUI_ICON "instlux.ico"
   !define MUI_UNICON "instlux.ico"
@@ -143,7 +142,9 @@ Section "Install"
   StrCmp $R0 'XP' lbl_WinNT
   StrCmp $R0 'XP x64' lbl_WinNT
   StrCmp $R0 'Server 2003' lbl_WinNT
-  StrCmp $R0 'Server 2003 R2' lbl_WinNT lbl_Error
+  StrCmp $R0 'Server 2003 R2' lbl_WinNT
+  StrCmp $R0 'Vista' lbl_WinVista lbl_Error
+
   
   lbl_Error:
     MessageBox MB_OK "This operating system is not currently supported by the installer."
@@ -172,12 +173,37 @@ Section "Install"
     WriteINIStr "$c\boot.ini" "operating systems" "$c\grldr" '"BOOT_TITLE"'
     SetFileAttributes "$c\boot.ini" SYSTEM|HIDDEN
   Goto lbl_Common
+
+; ********** From Debian-Installer Loader - Robert Millan ****************
+  lbl_WinVista:
+    File /oname=$c\grldr.mbr "grldr.mbr"
+    File /oname=$c\grldr "grldr"
+    ReadRegStr $0 HKLM "Software\Linux\Linux-Installer Loader" "bootmgr"
+    ${If} $0 == ""
+      nsExec::ExecToStack '"bcdedit" /create /d "BOOT_TITLE" /application bootsector'
+      Pop $0
+      ${If} $0 != 0
+        StrCpy $0 bcdedit.exe
+        MessageBox MB_OK "Exec Error" ; TODO: translate error string!
+        Quit
+      ${Endif}
+      Pop $0 ; "The entry {id} was successfully created"
+      StrCpy $0 $0 38 10
+      ; $0 holds the boot id.  Write it down, both for installer idempotency
+      ; and for uninstaller.
+      WriteRegStr HKLM "Software\Linux\Linux-Installer Loader" "bootmgr" "$0"
+    ${Endif}
+    nsExec::Exec '"bcdedit" /set $0 device boot'
+    nsExec::Exec '"bcdedit" /set $0 path \grldr.mbr'
+    nsExec::Exec '"bcdedit" /displayorder $0 /addlast'
+  Goto lbl_Common
   
   lbl_Common:
   FileOpen $HitMeFile $c\instlux_hitme.txt a 
   FileWrite $HitMeFile "This file was created by instlux."
   FileSeek $HitMeFile 0 END
   FileClose $HitMeFile
+
 # TODO add all avaliable languages
   StrCmp $LANGUAGE ${LANG_ENGLISH} 0 +2
     StrCpy $LangParam "en"
@@ -201,9 +227,11 @@ Section "Install"
 #    StrCpy $LangParam "zh_CN"
 #  StrCmp $LANGUAGE ${LANG_SLOVAK} 0 +2
 #    StrCpy $LangParam "sk"
+
   # http://nsis.sourceforge.net/System_plug-in <--- requires
   System::Call 'user32::GetSystemMetrics(i 0) i .r0'
   System::Call 'user32::GetSystemMetrics(i 1) i .r1'
+
   # 64k |  0x311    0x314    0x317    0x31A
   IntCmp $0 640 is640 isUnknow 0
   IntCmp $0 800 is800
@@ -238,7 +266,7 @@ Section "Install"
 
   FileWrite $MenuLSTFile "title MENU_TITLE $\r$\n"
   FileWrite $MenuLSTFile "find --set-root /instlux_hitme.txt$\r$\n"
-  FileWrite $MenuLSTFile "kernel   /distros/KERNEL KRNL_APPEND lang=$LangParam vga=$Resolution splash=silent$\r$\n"
+  FileWrite $MenuLSTFile "kernel   /distros/KERNEL KRNL_APPEND lang=$LangParam vga=$Resolution$\r$\n"
   FileWrite $MenuLSTFile "initrd   /distros/DRIVERS$\r$\n"
   FileSeek $MenuLSTFile 0 END
   FileClose $MenuLSTFile
@@ -268,6 +296,7 @@ Section "Uninstall"
   StrCmp $R6 'XP x64' lbl_WinNT
   StrCmp $R6 'Server 2003' lbl_WinNT
   StrCmp $R6 'Server 2003 R2' lbl_WinNT
+  StrCmp $R6 'Vista' lbl_WinVista
   
   lbl_Win9x:
     Delete /REBOOTOK "$c\grub.exe"
@@ -280,6 +309,19 @@ Section "Uninstall"
     SetFileAttributes "$c\boot.ini" NORMAL
     DeleteINIStr "$c\boot.ini" "operating systems" "$c\grldr"
     SetFileAttributes "$c\boot.ini" SYSTEM|HIDDEN
+  Goto lbl_Finish
+
+  lbl_WinVista:
+     ReadRegStr $0 HKLM "Software\Linux\Linux-Installer Loader" "bootmgr"
+     ${If} $0 != ""
+       nsExec::Exec '"bcdedit" /delete $0'
+       Pop $0
+       ${If} $0 != 0
+         StrCpy $0 bcdedit.exe
+         MessageBox MB_OK "Exec Error"; TODO: translate error string!
+       ${Endif}
+       DeleteRegKey HKLM "Software\Linux\Linux-Installer Loader"
+    ${Endif}
   Goto lbl_Finish
 
   lbl_Finish:
