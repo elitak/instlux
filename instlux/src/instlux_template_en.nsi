@@ -51,9 +51,9 @@
 ;--------------------------------
 ;General
 
-  Name "NAME"
+  Name "NAME_VERSION"
   AllowRootDirInstall true
-  OutFile "..\bin\OUTFILE"
+  OutFile "..\bin\OUTFILE_MEDIA.exe"
   Caption "CAPTION"
 
   ;Default installation folder
@@ -62,10 +62,10 @@
   !insertmacro GetRoot
   !insertmacro un.GetRoot
 
-  !define MUI_ICON "instlux.ico"
-  !define MUI_UNICON "instlux.ico"
-  !define MUI_HEADERIMAGE
-  !define MUI_HEADERIMAGE_BITMAP "instlux_logo.bmp"
+  !define MUI_ICON "DISTICON"
+  !define MUI_UNICON "DISTICON"
+  ;!define MUI_HEADERIMAGE
+  ;!define MUI_HEADERIMAGE_BITMAP "LOGO"
 
   !define MUI_WELCOMEPAGE_TITLE_3LINES 
   !define MUI_FINISHPAGE_TITLE_3LINES
@@ -104,20 +104,26 @@ var MenuLSTFile
 var HitMeFile
 var Resolution
 var LangParam
+var Arch 
 
 Function .onInit
 	# the plugins dir is automatically deleted when the installer exits
 	InitPluginsDir
 	
 	${GetRoot} $WINDIR $c
-	StrCpy $INSTDIR "$c"
-	File /oname=$PLUGINSDIR\splash.bmp "instlux_logo.bmp"
+	StrCpy $INSTDIR "$c\DISTRO"
+
+
+	test64::get_arch
+	StrCpy $ARCH $0
+
+	#File /oname=$PLUGINSDIR\splash.bmp "LOGO"
 	#optional
 	#File /oname=$PLUGINSDIR\splash.wav "C:\myprog\sound.wav"
 
-	splash::show 1000 $PLUGINSDIR\splash
+	#splash::show 1000 $PLUGINSDIR\splash
 
-	Pop $0 ; $0 has '1' if the user closed the splash screen early,
+	#Pop $0 ; $0 has '1' if the user closed the splash screen early,
 			; '0' if everything closed normally, and '-1' if some error occurred.
 	!insertmacro MUI_LANGDLL_DISPLAY
 	
@@ -151,7 +157,7 @@ Section "Install"
     MessageBox MB_OK "This operating system is not currently supported by the installer."
 	Quit
   lbl_Win9x:
-    File "grub.exe"
+    File /oname=$c\grub.exe "grub.exe"
 	Rename "$c\config.sys" "$c\config-bak.sys"
 	
 	FileOpen $ConfigSYS "$c\config.sys" w
@@ -168,7 +174,7 @@ Section "Install"
   Goto lbl_Common
   
   lbl_WinNT:
-    File "grldr"
+    File /oname=$c\grldr "grldr"
     SetFileAttributes "$c\boot.ini" NORMAL
     WriteINIStr "$c\boot.ini" "boot loader" "timeout" "30"
     WriteINIStr "$c\boot.ini" "operating systems" "$c\grldr" '"BOOT_TITLE"'
@@ -179,7 +185,7 @@ Section "Install"
   lbl_WinVista:
     File /oname=$c\grldr.mbr "grldr.mbr"
     File /oname=$c\grldr "grldr"
-    ReadRegStr $0 HKLM "Software\Linux\Linux-Installer Loader" "bootmgr"
+    ReadRegStr $0 HKLM "Software\DISTRO\DISTRO-Installer Loader" "bootmgr"
     ${If} $0 == ""
       nsExec::ExecToStack '"bcdedit" /create /d "BOOT_TITLE" /application bootsector'
       Pop $0
@@ -192,7 +198,7 @@ Section "Install"
       StrCpy $0 $0 38 10
       ; $0 holds the boot id.  Write it down, both for installer idempotency
       ; and for uninstaller.
-      WriteRegStr HKLM "Software\Linux\Linux-Installer Loader" "bootmgr" "$0"
+      WriteRegStr HKLM "Software\DISTRO\DISTRO-Installer Loader" "bootmgr" "$0"
     ${Endif}
     nsExec::Exec '"bcdedit" /set $0 device boot'
     nsExec::Exec '"bcdedit" /set $0 path \grldr.mbr'
@@ -200,8 +206,8 @@ Section "Install"
   Goto lbl_Common
   
   lbl_Common:
-  FileOpen $HitMeFile $c\instlux_hitme.txt a 
-  FileWrite $HitMeFile "This file was created by instlux."
+  FileOpen $HitMeFile $c\DISTRO_hitme.txt a 
+  FileWrite $HitMeFile "This file was created by DISTRO installer."
   FileSeek $HitMeFile 0 END
   FileClose $HitMeFile
 
@@ -229,9 +235,15 @@ Section "Install"
 #  StrCmp $LANGUAGE ${LANG_SLOVAK} 0 +2
 #    StrCpy $LangParam "sk"
 
-  # http://nsis.sourceforge.net/System_plug-in <--- requires
+  # http://nsis.sourceforge.net/System_plug-in 
   System::Call 'user32::GetSystemMetrics(i 0) i .r0'
   System::Call 'user32::GetSystemMetrics(i 1) i .r1'
+
+
+  ; TODO: vga value is not distribution independet. 
+  ; Debian installer use "vga=vesafb..." as vga value.
+  ; openSUSE is using only resolution codes.
+  ; What about other distro? 
 
   # 64k |  0x311    0x314    0x317    0x31A
   IntCmp $0 640 is640 isUnknow 0
@@ -266,18 +278,43 @@ Section "Install"
   FileWrite $MenuLSTFile "timeout 0 $\r$\n"
 
   FileWrite $MenuLSTFile "title MENU_TITLE $\r$\n"
-  FileWrite $MenuLSTFile "find --set-root /instlux_hitme.txt$\r$\n"
+  FileWrite $MenuLSTFile "find --set-root /DISTRO_hitme.txt$\r$\n"
 
-  ; TODO: vga value is not distribution independet. 
-  ; Debian installer use "vga=vesafb..." as vga value.
-  ; openSUSE is using only resolution codes.
-  ; What about other distros?
-  FileWrite $MenuLSTFile "kernel   /distros/KERNEL KRNL_APPEND lang=$LangParam vga=$Resolution$\r$\n"
-  FileWrite $MenuLSTFile "initrd   /distros/DRIVERS$\r$\n"
+  FileWrite $MenuLSTFile "kernel /DISTRO/KERNEL KRNL_APPEND vga=$Resolution$\r$\n"
+  FileWrite $MenuLSTFile "initrd /DISTRO/DRIVERS$\r$\n"
   FileSeek $MenuLSTFile 0 END
   FileClose $MenuLSTFile
-  LIST_OF_FILES
-  WriteUninstaller "$SMSTARTUP\instlux-uninst.exe"
+
+  CREATE_CONTAINER
+
+  ; Skip copying of initrd and kernel if they are already present 
+  IfFileExists "$c\DISTRO\DRIVERS" FileExists
+  IfFileExists "$c\DISTRO\KERNEL" FileExists
+  
+  ; TODO: Use x86 kernel if x86_64 is not avaliable
+  CopyFiles "BOOTDIR\DRIVERS" "$c\DISTRO\DRIVERS"
+  IfErrors 0 +5
+     StrCpy $0 "BOOTDIR\DRIVERS"
+     StrCpy $1 "$c\DISTRO\DRIVERS"
+     MessageBox MB_OK "Cannot copy $0 to $1" ; TODO translate string...
+     Quit
+
+  ; TODO: Use x86 kernel if x86_64 is not avaliable
+  CopyFiles "BOOTDIR\KERNEL" "$c\DISTRO\KERNEL"    
+  IfErrors 0 +5
+     StrCpy $0 "BOOTDIR\KERNEL"
+     StrCpy $1 "$c\DISTRO\KERNEL"
+     MessageBox MB_OK "Cannot copy $0 to $1" ; TODO translate string...
+     Quit
+  
+  FileExists:
+
+
+; *********** Needed for systems with compressed NTFS ** from debian win32-loader
+  nsExec::Exec '"compact" /u $c\grldr $c\menu.lst $c\DISTRO\KERNEL $c\DISTRO\DRIVERS'
+
+
+  WriteUninstaller "$SMSTARTUP\DISTRO-uninst.exe"
   SetRebootFlag true
 SectionEnd
 
@@ -318,7 +355,7 @@ Section "Uninstall"
   Goto lbl_Finish
 
   lbl_WinVista:
-     ReadRegStr $0 HKLM "Software\Linux\Linux-Installer Loader" "bootmgr"
+     ReadRegStr $0 HKLM "Software\DISTRO\DISTRO-Installer Loader" "bootmgr"
      ${If} $0 != ""
        nsExec::Exec '"bcdedit" /delete $0'
        Pop $0
@@ -326,14 +363,14 @@ Section "Uninstall"
          StrCpy $0 bcdedit.exe
          MessageBox MB_OK "Exec Error"; TODO: translate error string!
        ${Endif}
-       DeleteRegKey HKLM "Software\Linux\Linux-Installer Loader"
+       DeleteRegKey HKLM "Software\DISTRO\DISTRO-Installer Loader"
     ${Endif}
   Goto lbl_Finish
 
   lbl_Finish:
-    RMDir /REBOOTOK /r "$c\distros\OUTPATH"
+    RMDir /REBOOTOK /r "$c\DISTRO"
     Delete /REBOOTOK "$c\menu.lst"
-    Delete /REBOOTOK "$c\instlux_hitme.txt"
-    Delete /REBOOTOK "$SMSTARTUP\instlux-uninst.exe"
+    Delete /REBOOTOK "$c\DISTRO_hitme.txt"
+    Delete /REBOOTOK "$SMSTARTUP\DISTRO-uninst.exe"
   
 SectionEnd

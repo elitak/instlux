@@ -15,10 +15,10 @@ def remove_svn_dirs( dirs ):
 #kernels = [ {"distribution":"Linkat","version":"1.1","media":"CDROM","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536"}]
 
 kernels = [ 
-	{"distribution":"openSUSE","version":"10.3","media":"NET","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536 splash=silent install=http:distribution/SL-OSS-factory/inst-source/ server=download.opensuse.org"},
-	{"distribution":"openSUSE","version":"10.3","media":"CDROM","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall splash=silent ramdisk_size=65536"}, 
-#	{"distribution":"openSUSE_x86_64_","version":"10.3","media":"NET","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536 install=http:distribution/SL-OSS-factory/inst-source/ server=download.opensuse.org"},
-#	{"distribution":"openSUSE_x86_64_","version":"10.3","media":"CDROM","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536"}
+# TODO: NET Installer: Implementing download of $ARCH-kernel is coming next...
+	{"distribution":"openSUSE","version":"10.3","media":"NET","kernel":"linux","drivers":"initrd","boot_dir":"","kernel_append":"devfs=mount,dall ramdisk_size=65536 install=ftp:pub/opensuse/distribution/SL-OSS-factory/inst-source/ server=ftp4.gwdg.de lang=$LangParam splash=silent","icon":"opensuse.ico","logo":""},
+	{"distribution":"openSUSE","version":"10.3","media":"LOCAL","kernel":"linux","drivers":"initrd","boot_dir":"$EXEDIR\\boot\\$ARCH\\loader","kernel_append":"devfs=mount,dall ramdisk_size=65536  lang=$LangParam splash=silent","icon":"opensuse.ico","logo":""}, 
+	{"distribution":"openSUSE","version":"10.3","media":"CDROM","kernel":"linux","drivers":"initrd","boot_dir":"","kernel_append":"devfs=mount,dall ramdisk_size=65536  lang=$LangParam splash=silent","icon":"opensuse.ico","logo":""}, 
 	]
 
 #languages = ["catalan"]
@@ -36,21 +36,22 @@ f.close()
 build = "build"
 #nsis_bin = '"c:\Program Files\NSIS\makensis.exe"'
 nsis_bin = '"makensis"'
-instlux_ico = "instlux.ico"
-instlux_logo = "instlux_logo.bmp"
 grub4dos = ["grldr","grldr.mbr","grub.exe"]
 
 def copy_from_src_to_build( build, file ):
   listdir = remove_svn_dirs( os.listdir( build ) )
-  if file not in listdir:
-    input = open("src"+os.sep+file, "rb")
-    output = open( build+os.sep+file, "wb")
-    output.write( input.read() )
-    output.flush()
-    output.close()
-    input.close()
+  if file in listdir:
+	os.remove(build+os.sep+file)
 
-def create_build_dirs( build, languages, instlux_ico, instlux_logo, grub4dos):
+  if file != "":	
+	input = open("src"+os.sep+file, "rb")
+	output = open( build+os.sep+file, "wb")
+	output.write( input.read() )
+	output.flush()
+	output.close()
+	input.close()
+
+def create_build_dirs( build, languages, kernels, grub4dos):
     listdirs = remove_svn_dirs( os.listdir(".") )
     if "bin" not in listdirs:
         os.mkdir( "bin" )
@@ -69,8 +70,11 @@ def create_build_dirs( build, languages, instlux_ico, instlux_logo, grub4dos):
     for language in languages:
         if language not in listdirs:
             os.mkdir( build+os.sep+"translations"+os.sep+language )
-    copy_from_src_to_build( build, instlux_ico )
-    copy_from_src_to_build( build, instlux_logo )
+
+    for kernel in kernels:
+    	copy_from_src_to_build( build, kernel["icon"] )
+    	copy_from_src_to_build( build, kernel["logo"] )
+
     for grub in grub4dos:
       copy_from_src_to_build( build, grub )
   
@@ -88,7 +92,9 @@ def get_customizations( kernels, build):
   for kernel in kernels:
     version = kernel["version"].replace(".","_")
     name = "instlux"+kernel["media"]+kernel["distribution"]+version+"_en"
-    caption = kernel["distribution"]+" "+kernel["version"]+" installer"
+    name_version = kernel["distribution"] + " " + kernel["version"]
+    outfile_name = kernel["distribution"] + version
+    caption = kernel["distribution"]+" "+kernel["version"]+" installer (" +  kernel["media"] + ")"
     list_of_files_string =""
     dir_out = name.replace("_en","")
     dir = "distros"+os.sep+dir_out
@@ -99,7 +105,33 @@ def get_customizations( kernels, build):
         list_of_files_string = list_of_files_string+"   SetOutPath $INSTDIR\\"+dirpath_formated+"\n"
         for file in filenames:
           list_of_files_string = list_of_files_string+"   File \"..\\"+dirpath_formated+"\\"+file+"\"\n"
-    customizations.append({"FILENAME":name+".nsi","NAME":name,"OUTFILE":name+".exe", "CAPTION":caption, "MENU_TITLE":caption, "KERNEL":dir_out+"/"+kernel["kernel"], "DRIVERS":dir_out+"/"+kernel["drivers"], "LIST_OF_FILES":list_of_files_string, "BOOT_TITLE":caption, "OUTPATH":dir_out, "KRNL_APPEND":kernel_append})
+
+
+    CREATE_CONTAINER = ""													
+    if kernel["media"] != "LOCAL":
+    	CREATE_CONTAINER = "IfFileExists \"$c\\"+kernel["distribution"]+"\\"+kernel["drivers"]+"\" FileExists\r\n"
+    	CREATE_CONTAINER = CREATE_CONTAINER + "File /oname=$c\\"+kernel["distribution"]+"\\"+kernel["drivers"]+" ../distros/instlux"+kernel["media"]+outfile_name+"//"+kernel["drivers"]+"\r\n"
+    	CREATE_CONTAINER = CREATE_CONTAINER + "File /oname=$c\\"+kernel["distribution"]+"\\"+kernel["kernel"]+" ../distros/instlux"+kernel["media"]+outfile_name+"//"+kernel["kernel"]+"\r\n"
+
+
+
+    customizations.append({
+		    "NAME_VERSION":name_version,
+		    "FILENAME":name+".nsi",
+		    "OUTFILE":outfile_name,
+		    "CREATE_CONTAINER":CREATE_CONTAINER,
+		    "CAPTION":caption,
+		    "MENU_TITLE":caption,
+		    "BOOT_TITLE":caption,
+		    "KRNL_APPEND":kernel_append,
+		    "DISTRO":kernel["distribution"],
+		    "MEDIA":kernel["media"],
+		    "BOOTDIR":kernel["boot_dir"],
+		    "KERNEL":kernel["kernel"],
+		    "DRIVERS":kernel["drivers"],
+		    "DISTICON":kernel["icon"],
+		    "LOGO":kernel["logo"]})
+
   return customizations;
 
 def create_one_nsis_file_for_distro( customizations,  build ):
@@ -173,7 +205,7 @@ def create_translated_licenses ( languages, build, list_of_contributors):
     f_orig.close()
 
 
-create_build_dirs(  build, languages, instlux_ico, instlux_logo, grub4dos )
+create_build_dirs(  build, languages, kernels, grub4dos )
 linuxes = get_linuxes( kernels )
 customizations = get_customizations( kernels, build)
 translations = get_translations( languages, linuxes );
