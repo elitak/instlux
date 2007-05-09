@@ -1,0 +1,6 @@
+Copyright (C) 2007  Robert Millan <rmh@aybabtu.com>
+
+test64 NSIS plugin from Debian win32-loader.
+http://www.goodbye-microsoft.com/source
+
+Note: 64bit arch got changed from amd64 to x86_64 in the plugin ! (2007-05-09) 
