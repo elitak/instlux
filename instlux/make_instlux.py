@@ -15,10 +15,9 @@ def remove_svn_dirs( dirs ):
 #kernels = [ {"distribution":"Linkat","version":"1.1","media":"CDROM","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536"}]
 
 kernels = [ 
-# TODO: NET Installer: Implementing download of $ARCH-kernel is coming next...
-	{"distribution":"openSUSE","version":"10.3","media":"NET","kernel":"linux","drivers":"initrd","boot_dir":"","kernel_append":"devfs=mount,dall ramdisk_size=65536 install=ftp:pub/opensuse/distribution/SL-OSS-factory/inst-source/ server=ftp4.gwdg.de lang=$LangParam splash=silent","icon":"opensuse.ico","logo":""},
-	{"distribution":"openSUSE","version":"10.3","media":"LOCAL","kernel":"linux","drivers":"initrd","boot_dir":"$EXEDIR\\boot\\$ARCH\\loader","kernel_append":"devfs=mount,dall ramdisk_size=65536  lang=$LangParam splash=silent","icon":"opensuse.ico","logo":""}, 
-	{"distribution":"openSUSE","version":"10.3","media":"CDROM","kernel":"linux","drivers":"initrd","boot_dir":"","kernel_append":"devfs=mount,dall ramdisk_size=65536  lang=$LangParam splash=silent","icon":"opensuse.ico","logo":""}, 
+	{"distribution":"openSUSE","version":"10.3","media":"NET","kernel":"linux","drivers":"initrd","boot_dir":"","boot_dl_dir":"ftp://ftp4.gwdg.de/pub/opensuse/distribution/SL-OSS-factory/inst-source/boot/$ARCH/loader","kernel_append":"devfs=mount,dall ramdisk_size=65536 install=ftp:pub/opensuse/distribution/SL-OSS-factory/inst-source/ server=ftp4.gwdg.de lang=$LangParam splash=silent","icon":"opensuse.ico","logo":""},
+	{"distribution":"openSUSE","version":"10.3","media":"LOCAL","kernel":"linux","drivers":"initrd","boot_dir":"$EXEDIR\\boot\\$ARCH\\loader","boot_dl_dir":"","kernel_append":"devfs=mount,dall ramdisk_size=65536  lang=$LangParam splash=silent","icon":"opensuse.ico","logo":""}, 
+	{"distribution":"openSUSE","version":"10.3","media":"CDROM","kernel":"linux","drivers":"initrd","boot_dir":"","boot_dl_dir":"","kernel_append":"devfs=mount,dall ramdisk_size=65536  lang=$LangParam splash=silent","icon":"opensuse.ico","logo":""}, 
 	]
 
 #languages = ["catalan"]
@@ -107,8 +106,23 @@ def get_customizations( kernels, build):
           list_of_files_string = list_of_files_string+"   File \"..\\"+dirpath_formated+"\\"+file+"\"\n"
 
 
-    CREATE_CONTAINER = ""													
-    if kernel["media"] != "LOCAL":
+    CREATE_CONTAINER = ""
+    if kernel["media"] == "NET":
+	CREATE_CONTAINER = "inetc::get \""+kernel["boot_dl_dir"] + "/" + kernel["drivers"] + "\" \"$c\\"+kernel["distribution"]+"\\"+kernel["drivers"] + "\"\r\n"  
+        CREATE_CONTAINER = CREATE_CONTAINER + "  Pop $0\r\n";
+        CREATE_CONTAINER = CREATE_CONTAINER + "  StrCmp $0 \"OK\" dlkernel\r\n";
+        CREATE_CONTAINER = CREATE_CONTAINER + "  StrCmp $0 \"URL Parts Error\" dlkernel\r\n"; # FIXME: This is an evil workaround for inetc on Vista
+
+        CREATE_CONTAINER = CREATE_CONTAINER + "    MessageBox MB_OK|MB_ICONEXCLAMATION \"Download Error initrd ( $0 ), click OK to abort installation\" /SD IDOK\r\n";
+        CREATE_CONTAINER = CREATE_CONTAINER + "  Abort\r\n";
+        CREATE_CONTAINER = CREATE_CONTAINER + "  dlkernel:\r\n";
+	CREATE_CONTAINER = CREATE_CONTAINER + "  inetc::get \""+kernel["boot_dl_dir"] + "/" + kernel["kernel"] + "\" \"$c\\"+kernel["distribution"]+"\\"+kernel["kernel"] + "\"\r\n"  
+        CREATE_CONTAINER = CREATE_CONTAINER + "  StrCmp $0 \"OK\" dlok\r\n";
+        CREATE_CONTAINER = CREATE_CONTAINER + "  StrCmp $0 \"URL Parts Error\" dlok\r\n"; # FIXME: This is an evil workaround for inetc on Vista
+        CREATE_CONTAINER = CREATE_CONTAINER + "    MessageBox MB_OK|MB_ICONEXCLAMATION \"Download Error kernel ( $0 ), click OK to abort installation\" /SD IDOK\r\n";
+        CREATE_CONTAINER = CREATE_CONTAINER + "  Abort\r\n";
+        CREATE_CONTAINER = CREATE_CONTAINER + "  dlok:\r\n";
+    elif kernel["media"] != "LOCAL":
     	CREATE_CONTAINER = "IfFileExists \"$c\\"+kernel["distribution"]+"\\"+kernel["drivers"]+"\" FileExists\r\n"
     	CREATE_CONTAINER = CREATE_CONTAINER + "File /oname=$c\\"+kernel["distribution"]+"\\"+kernel["drivers"]+" ../distros/instlux"+kernel["media"]+outfile_name+"//"+kernel["drivers"]+"\r\n"
     	CREATE_CONTAINER = CREATE_CONTAINER + "File /oname=$c\\"+kernel["distribution"]+"\\"+kernel["kernel"]+" ../distros/instlux"+kernel["media"]+outfile_name+"//"+kernel["kernel"]+"\r\n"
