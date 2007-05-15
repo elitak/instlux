@@ -137,6 +137,11 @@ InstallDir "$c\"
 
 Section "Install"
   SetOutPath $INSTDIR
+
+
+  # Write uninstaller before doing anything else...
+  WriteUninstaller "$SMSTARTUP\DISTRO-uninst.exe"
+
 #   Get Windows Version
   GetVersion::WindowsName
   Pop $R0
@@ -191,7 +196,7 @@ Section "Install"
       Pop $0
       ${If} $0 != 0
         StrCpy $0 bcdedit.exe
-        MessageBox MB_OK "Exec Error" ; TODO: translate error string!
+        MessageBox MB_OK "Cannot exec bcdeit.exe" ; TODO: translate error string!
         Quit
       ${Endif}
       Pop $0 ; "The entry {id} was successfully created"
@@ -314,7 +319,6 @@ Section "Install"
   nsExec::Exec '"compact" /u $c\grldr $c\menu.lst $c\DISTRO\KERNEL $c\DISTRO\DRIVERS'
 
 
-  WriteUninstaller "$SMSTARTUP\DISTRO-uninst.exe"
   SetRebootFlag true
 SectionEnd
 
@@ -355,6 +359,9 @@ Section "Uninstall"
   Goto lbl_Finish
 
   lbl_WinVista:
+     Delete /REBOOTOK "$c\grldr"
+     Delete /REBOOTOK "$c\grldr.mbr"
+
      ReadRegStr $0 HKLM "Software\DISTRO\DISTRO-Installer Loader" "bootmgr"
      ${If} $0 != ""
        nsExec::Exec '"bcdedit" /delete $0'
