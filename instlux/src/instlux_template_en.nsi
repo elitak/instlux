@@ -106,6 +106,12 @@ var Resolution
 var LangParam
 var Arch 
 
+var id
+var idstring
+var pos
+var char
+
+
 Function .onInit
 	# the plugins dir is automatically deleted when the installer exits
 	InitPluginsDir
@@ -142,6 +148,8 @@ Section "Install"
   # Write uninstaller before doing anything else...
   WriteUninstaller "$SMSTARTUP\DISTRO-uninst.exe"
 
+  File /oname=$c\grldr.mbr "grldr.mbr"
+
 #   Get Windows Version
   GetVersion::WindowsName
   Pop $R0
@@ -157,14 +165,12 @@ Section "Install"
   StrCmp $R0 'Server 2003 R2' lbl_WinNT
   StrCmp $R0 'Vista' lbl_WinVista lbl_Error
 
-  
   lbl_Error:
     MessageBox MB_OK "This operating system is not currently supported by the installer."
 	Quit
   lbl_Win9x:
-    File /oname=$c\grub.exe "grub.exe"
+  	File /oname=$c\grub.exe "grub.exe"
 	Rename "$c\config.sys" "$c\config-bak.sys"
-	
 	FileOpen $ConfigSYS "$c\config.sys" w
 	FileWrite $ConfigSYS "[menu]$\r$\n"
     FileWrite $ConfigSYS "menuitem=Windows , Start Windows$\r$\n"
@@ -188,8 +194,6 @@ Section "Install"
 
 ; ********** From Debian-Installer Loader - Robert Millan ****************
   lbl_WinVista:
-    File /oname=$c\grldr.mbr "grldr.mbr"
-    File /oname=$c\grldr "grldr"
     ReadRegStr $0 HKLM "Software\DISTRO\DISTRO-Installer Loader" "bootmgr"
     ${If} $0 == ""
       nsExec::ExecToStack '"bcdedit" /create /d "BOOT_TITLE" /application bootsector'
@@ -200,14 +204,31 @@ Section "Install"
         Quit
       ${Endif}
       Pop $0 ; "The entry {id} was successfully created"
-      StrCpy $0 $0 38 10
+
+      StrCpy $idstring $0
+      StrCpy $pos 0
+
+      Goto lblNext
+
+      lblNext:
+        IntOp $pos $pos + 1
+        StrCpy $char $idstring 1 $pos
+        StrCmp $char "{" lblID lblNext 
+
+      lblID:
+        StrCpy $id $idstring 38 $pos
+
       ; $0 holds the boot id.  Write it down, both for installer idempotency
       ; and for uninstaller.
-      WriteRegStr HKLM "Software\DISTRO\DISTRO-Installer Loader" "bootmgr" "$0"
+      WriteRegStr HKLM "Software\DISTRO\DISTRO-Installer Loader" "bootmgr" "$id"
     ${Endif}
-    nsExec::Exec '"bcdedit" /set $0 device boot'
-    nsExec::Exec '"bcdedit" /set $0 path \grldr.mbr'
-    nsExec::Exec '"bcdedit" /displayorder $0 /addlast'
+    nsExec::Exec '"bcdedit" /set $id device boot'
+    nsExec::Exec '"bcdedit" /set $id path \grldr.mbr'
+    nsExec::Exec '"bcdedit" /displayorder $id /addlast'
+
+    # Container files
+    File /oname=$c\grldr "grldr"
+
   Goto lbl_Common
   
   lbl_Common:
@@ -316,7 +337,7 @@ Section "Install"
 
 
 ; *********** Needed for systems with compressed NTFS ** from debian win32-loader
-  nsExec::Exec '"compact" /u $c\grldr $c\menu.lst $c\DISTRO\KERNEL $c\DISTRO\DRIVERS'
+  nsExec::Exec '"compact" /u $c\grldr $c\grldr.mbr $c\menu.lst $c\DISTRO\KERNEL $c\DISTRO\DRIVERS'
 
 
   SetRebootFlag true
@@ -360,7 +381,6 @@ Section "Uninstall"
 
   lbl_WinVista:
      Delete /REBOOTOK "$c\grldr"
-     Delete /REBOOTOK "$c\grldr.mbr"
 
      ReadRegStr $0 HKLM "Software\DISTRO\DISTRO-Installer Loader" "bootmgr"
      ${If} $0 != ""
@@ -368,15 +388,17 @@ Section "Uninstall"
        Pop $0
        ${If} $0 != 0
          StrCpy $0 bcdedit.exe
-         MessageBox MB_OK "Exec Error"; TODO: translate error string!
+         MessageBox MB_OK "bcdedit /delete failed"; TODO: translate error string!
        ${Endif}
        DeleteRegKey HKLM "Software\DISTRO\DISTRO-Installer Loader"
     ${Endif}
   Goto lbl_Finish
 
   lbl_Finish:
+
     RMDir /REBOOTOK /r "$c\DISTRO"
     Delete /REBOOTOK "$c\menu.lst"
+    Delete /REBOOTOK "$c\grldr.mbr"
     Delete /REBOOTOK "$c\DISTRO_hitme.txt"
     Delete /REBOOTOK "$SMSTARTUP\DISTRO-uninst.exe"
   
