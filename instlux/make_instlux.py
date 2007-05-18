@@ -91,7 +91,7 @@ def get_customizations( kernels, build):
   for kernel in kernels:
     version = kernel["version"].replace(".","_")
     name = "instlux"+kernel["media"]+kernel["distribution"]+version+"_en"
-    name_version = kernel["distribution"] + " " + kernel["version"]
+    name_version = kernel["distribution"] + " " + kernel["version"] + " Installer"
     outfile_name = kernel["distribution"] + version
     caption = kernel["distribution"]+" "+kernel["version"]+" installer (" +  kernel["media"] + ")"
     list_of_files_string =""
