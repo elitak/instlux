@@ -316,22 +316,30 @@ Section "Install"
   ; Skip copying of initrd and kernel if they are already present 
   IfFileExists "$c\DISTRO\DRIVERS" FileExists
   IfFileExists "$c\DISTRO\KERNEL" FileExists
-  
-  ; TODO: Use x86 kernel if x86_64 is not avaliable
-  CopyFiles "BOOTDIR\DRIVERS" "$c\DISTRO\DRIVERS"
-  IfErrors 0 +5
-     StrCpy $0 "BOOTDIR\DRIVERS"
-     StrCpy $1 "$c\DISTRO\DRIVERS"
-     MessageBox MB_OK "Cannot copy $0 to $1" ; TODO translate string...
-     Quit
 
-  ; TODO: Use x86 kernel if x86_64 is not avaliable
+  goto docopy
+
+  ; force architecture to i386 (i386 installation on x86_64)
+  tryi386:
+  StrCpy $ARCH 'i386'
+ 
+  docopy:
+  
+  CopyFiles "BOOTDIR\DRIVERS" "$c\DISTRO\DRIVERS"
+  IfErrors 0 +6
+    StrCmp $Arch 'x86_64' tryi386
+    StrCpy $0 "BOOTDIR\DRIVERS"
+    StrCpy $1 "$c\DISTRO\DRIVERS"
+    MessageBox MB_OK "Cannot copy $0 to $1" ; TODO translate string...
+    Quit
+
   CopyFiles "BOOTDIR\KERNEL" "$c\DISTRO\KERNEL"    
   IfErrors 0 +5
-     StrCpy $0 "BOOTDIR\KERNEL"
-     StrCpy $1 "$c\DISTRO\KERNEL"
-     MessageBox MB_OK "Cannot copy $0 to $1" ; TODO translate string...
-     Quit
+    StrCpy $0 "BOOTDIR\KERNEL"
+    StrCpy $1 "$c\DISTRO\KERNEL"
+    MessageBox MB_OK "Cannot copy $0 to $1" ; TODO translate string...
+    Quit
+
   
   FileExists:
 
