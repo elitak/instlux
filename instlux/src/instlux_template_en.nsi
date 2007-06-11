@@ -81,6 +81,10 @@
 
   !insertmacro MUI_PAGE_WELCOME
   !insertmacro MUI_PAGE_LICENSE $(license)
+  !insertmacro MUI_PAGE_COMPONENTS	
+;  Page components
+  Page custom "Advanced"
+
   !insertmacro MUI_PAGE_INSTFILES
   !insertmacro MUI_PAGE_FINISH    
   !insertmacro MUI_UNPAGE_CONFIRM
@@ -118,6 +122,7 @@ Function .onInit
 	
 	${GetRoot} $WINDIR $c
 	StrCpy $INSTDIR "$c\DISTRO"
+	File /oname=$PLUGINSDIR\advanced.ini "advanced.ini"
 
 
 	test64::get_arch
@@ -135,6 +140,8 @@ Function .onInit
 	
 FunctionEnd
 
+!include "Sections.nsh"
+
 InstallDir "$c\"
 
 ;-------------------------------
@@ -142,6 +149,7 @@ InstallDir "$c\"
 ;Sections
 
 Section "Install"
+  SectionIn RO               ; make this section always selected
   SetOutPath $INSTDIR
 
 
@@ -317,17 +325,8 @@ Section "Install"
   IfFileExists "$c\DISTRO\DRIVERS" FileExists
   IfFileExists "$c\DISTRO\KERNEL" FileExists
 
-  goto docopy
-
-  ; force architecture to i386 (i386 installation on x86_64)
-  tryi386:
-  StrCpy $ARCH 'i386'
- 
-  docopy:
-  
   CopyFiles "BOOTDIR\DRIVERS" "$c\DISTRO\DRIVERS"
-  IfErrors 0 +6
-    StrCmp $Arch 'x86_64' tryi386
+  IfErrors 0 +5
     StrCpy $0 "BOOTDIR\DRIVERS"
     StrCpy $1 "$c\DISTRO\DRIVERS"
     MessageBox MB_OK "Cannot copy $0 to $1" ; TODO translate string...
@@ -350,6 +349,37 @@ Section "Install"
 
   SetRebootFlag true
 SectionEnd
+
+Section "Display Advanced Options" SecOptional
+# File "opt.exe"
+SectionEnd
+
+Function "Advanced"
+  StrCmp $Arch 'i386' disablearchselection  ; disable arch selection if arch is i386
+  CREATE_CONTAINER_ALLOWS_ARCHSELECTION      ; x86_64 and container allows arch selection (Net Installation)
+  IfFileExists "BOOTDIR\KERNEL" x86_64kernelexists
+  StrCpy $Arch 'i386'            ; no x86_64 kernel force arch to i386 and disable arch selection
+  goto disablearchselection
+x86_64kernelexists:              ; there is a x86_64 kernel
+  StrCpy $Arch 'i386'            
+  IfFileExists "BOOTDIR\KERNEL" i386andx86_64kernelexist
+  StrCpy $Arch 'x86_64'          ; only x86_64 kernel exists => reset arch and disable selection
+  goto disablearchselection
+i386andx86_64kernelexist:
+  StrCpy $Arch 'x86_64'          ; set architecture back and display dialog
+  goto displayadvanceddialog
+disablearchselection:
+  WriteINIStr "$PLUGINSDIR\advanced.ini" 'field 3' 'Flags' 'DISABLED'
+
+displayadvanceddialog:
+  WriteINIStr "$PLUGINSDIR\advanced.ini" 'field 3' 'State' $Arch ; update arch settings
+
+  SectionGetFlags ${SecOptional} $R0
+  IntOp $R0 $R0 & ${SF_SELECTED}
+  StrCmp $R0 ${SF_SELECTED} "" +3   ; user selected the display advanced options dialog
+    InstallOptions::dialog "$PLUGINSDIR\advanced.ini"
+    ReadINIStr $Arch "$PLUGINSDIR\advanced.ini" "field 3" "state"     ; read user choice
+FunctionEnd
 
 ;-------------------------------------------
 ; uninstall section

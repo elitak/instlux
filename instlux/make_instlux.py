@@ -76,6 +76,8 @@ def create_build_dirs( build, languages, kernels, grub4dos):
 
     for grub in grub4dos:
       copy_from_src_to_build( build, grub )
+
+    copy_from_src_to_build( build, "advanced.ini" )	
   
 
 def get_linuxes( kernels ):
@@ -105,7 +107,7 @@ def get_customizations( kernels, build):
         for file in filenames:
           list_of_files_string = list_of_files_string+"   File \"..\\"+dirpath_formated+"\\"+file+"\"\n"
 
-
+    CREATE_CONTAINER_ALLOWS_ARCHSELECTION = "";
     CREATE_CONTAINER = ""
     if kernel["media"] == "NET":
 	CREATE_CONTAINER = "inetc::get \""+kernel["boot_dl_dir"] + "/" + kernel["drivers"] + "\" \"$c\\"+kernel["distribution"]+"\\"+kernel["drivers"] + "\"\r\n"  
@@ -122,6 +124,7 @@ def get_customizations( kernels, build):
         CREATE_CONTAINER = CREATE_CONTAINER + "    MessageBox MB_OK|MB_ICONEXCLAMATION \"Download Error kernel ( $0 ), click OK to abort installation\" /SD IDOK\r\n";
         CREATE_CONTAINER = CREATE_CONTAINER + "  Abort\r\n";
         CREATE_CONTAINER = CREATE_CONTAINER + "  dlok:\r\n";
+        CREATE_CONTAINER_ALLOWS_ARCHSELECTION = "goto displayadvanceddialog";
     elif kernel["media"] != "LOCAL":
     	CREATE_CONTAINER = "IfFileExists \"$c\\"+kernel["distribution"]+"\\"+kernel["drivers"]+"\" FileExists\r\n"
     	CREATE_CONTAINER = CREATE_CONTAINER + "File /oname=$c\\"+kernel["distribution"]+"\\"+kernel["drivers"]+" ../distros/instlux"+kernel["media"]+outfile_name+"//"+kernel["drivers"]+"\r\n"
@@ -134,6 +137,7 @@ def get_customizations( kernels, build):
 		    "FILENAME":name+".nsi",
 		    "OUTFILE":outfile_name,
 		    "CREATE_CONTAINER":CREATE_CONTAINER,
+		    "CREATE_CONTAINER_ALLOWS_ARCHSELECTION":CREATE_CONTAINER_ALLOWS_ARCHSELECTION,
 		    "CAPTION":caption,
 		    "MENU_TITLE":caption,
 		    "BOOT_TITLE":caption,
