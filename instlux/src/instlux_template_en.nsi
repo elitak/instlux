@@ -156,7 +156,7 @@ InstallDir "$c\"
 
 ;Sections
 
-Section "Install"
+Section "Install" install
   SectionIn RO               ; make this section always selected
   SetOutPath $INSTDIR
 
@@ -388,6 +388,13 @@ displayadvanceddialog:
     InstallOptions::dialog "$PLUGINSDIR\advanced.ini"
     ReadINIStr $Arch "$PLUGINSDIR\advanced.ini" "field 3" "state"     ; read user choice
 FunctionEnd
+
+
+!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+  !insertmacro MUI_DESCRIPTION_TEXT ${install} "Install the openSUSE Installer"
+  !insertmacro MUI_DESCRIPTION_TEXT ${Secoptional} "Display advanced options dialog with additional settings like architecture for x86_64 cpus"
+!insertmacro MUI_FUNCTION_DESCRIPTION_END
+
 
 ;-------------------------------------------
 ; uninstall section
