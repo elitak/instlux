@@ -77,6 +77,14 @@
   !define MUI_ABORTWARNING
 
 ;--------------------------------
+;Language Selection Dialog Settings
+
+  ;Remember the installer language
+  !define MUI_LANGDLL_REGISTRY_ROOT "HKCU" 
+  !define MUI_LANGDLL_REGISTRY_KEY "Software\openSUSE Installer" 
+  !define MUI_LANGDLL_REGISTRY_VALUENAME "Installer Language"
+
+;--------------------------------
 ;Pages
 
   !insertmacro MUI_PAGE_WELCOME
@@ -389,6 +397,8 @@ FunctionEnd
 Section "Uninstall"
   ${un.GetRoot} $WINDIR $c
 
+  DeleteRegKey /ifempty HKCU "Software\openSUSE Installer"
+
   #   Get Windows Version
   GetVersion::WindowsName
   Pop $R6
@@ -441,3 +451,13 @@ Section "Uninstall"
     Delete /REBOOTOK "$SMSTARTUP\DISTRO-uninst.exe"
   
 SectionEnd
+
+;--------------------------------
+;Uninstaller Functions
+
+Function un.onInit
+
+  !insertmacro MUI_UNGETLANGUAGE
+  
+FunctionEnd
+
