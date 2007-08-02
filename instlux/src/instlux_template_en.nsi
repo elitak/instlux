@@ -144,7 +144,12 @@ Function .onInit
 
 	#Pop $0 ; $0 has '1' if the user closed the splash screen early,
 			; '0' if everything closed normally, and '-1' if some error occurred.
-	!insertmacro MUI_LANGDLL_DISPLAY
+
+        !define MUI_LANGDLL_WINDOWTITLE "NAME_VERSION: Select language"
+        !define MUI_LANGDLL_INFO "Please select a language for the NAME_VERSION:"
+        !insertmacro MUI_LANGDLL_DISPLAY
+        !undef MUI_LANGDLL_WINDOWTITLE
+        !undef MUI_LANGDLL_INFO
 	
 FunctionEnd
 
@@ -391,7 +396,7 @@ FunctionEnd
 
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${install} "Install the openSUSE Installer"
+  !insertmacro MUI_DESCRIPTION_TEXT ${install} "Install the NAME_VERSION"
   !insertmacro MUI_DESCRIPTION_TEXT ${Secoptional} "Display advanced options dialog with additional settings like architecture for x86_64 cpus"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
