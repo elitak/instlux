@@ -338,6 +338,7 @@ Section "Install" install
   IfFileExists "$c\DISTRO\DRIVERS" FileExists
   IfFileExists "$c\DISTRO\KERNEL" FileExists
 
+  ClearErrors
   CopyFiles "BOOTDIR\DRIVERS" "$c\DISTRO\DRIVERS"
   IfErrors 0 +5
     StrCpy $0 "BOOTDIR\DRIVERS"
