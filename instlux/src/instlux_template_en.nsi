@@ -243,7 +243,7 @@ Section "Install" install
       ; and for uninstaller.
       WriteRegStr HKLM "Software\DISTRO\DISTRO-Installer Loader" "bootmgr" "$id"
     ${Endif}
-    nsExec::Exec '"bcdedit" /set $id device boot'
+    nsExec::Exec '"bcdedit" /set $id device partition=$c'
     nsExec::Exec '"bcdedit" /set $id path \grldr.mbr'
     nsExec::Exec '"bcdedit" /displayorder $id /addlast'
 
