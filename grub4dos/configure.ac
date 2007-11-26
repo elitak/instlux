@@ -17,7 +17,7 @@ AC_INIT([GRUB], [0.97], [bug-grub@gnu.org])
 AC_CONFIG_SRCDIR([stage2/stage2.c])
 AC_CONFIG_HEADER([config.h])
 AM_INIT_AUTOMAKE
-
+AM_PROG_AS
 dnl Generate stage2/grub4dos_version.h
 echo "#define GRUB4DOS_VERSION \"`cat grub4dos_version` `date -u +%Y-%m-%d`\"" > grub4dos_version.h
 
