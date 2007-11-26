@@ -16,8 +16,8 @@ INCLUDES = -I$(top_srcdir)/stage1 -I$(top_srcdir)/netboot
 # The library for /sbin/grub.
 noinst_LIBRARIES = libgrub.a
 libgrub_a_SOURCES = boot.c builtins.c char_io.c cmdline.c common.c \
-	disk_io.c fsys_ext2fs.c fsys_fat.c fsys_ntfs.c fsys_ffs.c fsys_iso9660.c \
-	fsys_jfs.c fsys_minix.c fsys_reiserfs.c fsys_ufs2.c \
+	disk_io.c fsys_ext2fs.c fsys_fat.c fsys_ntfs.c fsys_iso9660.c \
+	fsys_jfs.c fsys_minix.c fsys_reiserfs.c \
 	fsys_vstafs.c fsys_xfs.c fsys_pxe.c gunzip.c md5.c serial.c stage2.c \
 	terminfo.c tparm.c graphics.c
 libgrub_a_CFLAGS = $(GRUB_CFLAGS) -I$(top_srcdir)/lib \
