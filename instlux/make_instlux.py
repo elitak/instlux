@@ -177,7 +177,7 @@ def get_translations( languages, linuxes):
     mui_languages = ""
     mui_translated_licenses = ""
     for language in languages:
-      mui_languages+="  !insertmacro MUI_LANGUAGE \""+language+"\"\n"    
+      mui_languages+="  !insertmacro MUI_LANGUAGE \""+ language[0:1].upper() + language[1:] +"\"\n"    
       mui_translated_licenses += "  LicenseLangString license ${LANG_"+language.upper()+"} \"translations/"+language+"/license_"+language+".txt\"\n"
     translations[ 'All' ].append(["  !insertmacro MUI_LANGUAGE \"English\"",mui_languages])
     translations[ 'All' ].append(["  LicenseLangString license ${LANG_ENGLISH} \"translations/english/license_english.txt\"",mui_translated_licenses])
