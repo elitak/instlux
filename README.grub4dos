@@ -1,0 +1,35 @@
+The grub4dos directory contains the sources for
+instlux/src/grub.exe
+instlux/src/grldr
+instlux/src/grldr.mbr
+
+To update the files do a 
+./configure
+make
+
+in the grub4dos dir and copy grub.exe, grldr and grldr.mbr from
+the stage2 subdir to the instlux/src dir.
+
+As of 2007.11.26 grub4dos is a copy of grub4dos r54.
+The only differences are that
+
+stage2/defs.h
+stage2/dir.h
+stage2/disk_inode.h
+stage2/disk_inode_ffs.h
+stage2/fs.h
+stage2/fsys_ffs.c
+stage2/fsys_ufs2.c
+netboot/cs89x0.txt
+netboot/cs89x0.c
+netboot/cs89x0.h
+
+have been removed because their headers contain statements that might indicate
+that they are incompatible with the GPL.
+
+stage2/setjmp.S
+
+has been replaced with setjmp.S from the grub2 distribution
+
+
+
