@@ -15,9 +15,11 @@ def remove_svn_dirs( dirs ):
 #kernels = [ {"distribution":"Linkat","version":"1.1","media":"CDROM","kernel":"linux","drivers":"initrd","kernel_append":"devfs=mount,dall ramdisk_size=65536"}]
 
 kernels = [ 
-	{"distribution":"openSUSE","version":"10.3","media":"NET","kernel":"linux","drivers":"initrd","boot_dir":"","boot_dl_dir":"ftp://ftp4.gwdg.de/pub/opensuse/distribution/SL-OSS-factory/inst-source/boot/$ARCH/loader","kernel_append":"devfs=mount,dall ramdisk_size=65536 install=ftp:pub/opensuse/distribution/SL-OSS-factory/inst-source/ server=ftp4.gwdg.de lang=$LangParam splash=silent","icon":"opensuse.ico","logo":""},
-	{"distribution":"openSUSE","version":"10.3","media":"LOCAL","kernel":"linux","drivers":"initrd","boot_dir":"$EXEDIR\\boot\\$ARCH\\loader","boot_dl_dir":"","kernel_append":"devfs=mount,dall ramdisk_size=65536  lang=$LangParam splash=silent","icon":"opensuse.ico","logo":""}, 
-	{"distribution":"openSUSE","version":"10.3","media":"CDROM","kernel":"linux","drivers":"initrd","boot_dir":"","boot_dl_dir":"","kernel_append":"devfs=mount,dall ramdisk_size=65536  lang=$LangParam splash=silent","icon":"opensuse.ico","logo":""}, 
+	{"distribution":"openSUSE","version":"11.0","media":"NET","kernel":"linux","drivers":"initrd","boot_dir":"","boot_dl_dir":"ftp://ftp4.gwdg.de/pub/opensuse/distribution/SL-OSS-factory/inst-source/boot/$ARCH/loader","kernel_append":"devfs=mount,dall ramdisk_size=65536 install=ftp:pub/opensuse/distribution/SL-OSS-factory/inst-source/ server=ftp4.gwdg.de lang=$LangParam splash=silent","icon":"opensuse.ico","logo":""},
+	{"distribution":"openSUSE","version":"11.0","media":"LOCAL","kernel":"linux","drivers":"initrd","boot_dir":"$EXEDIR\\boot\\$ARCH\\loader","boot_dl_dir":"","kernel_append":"devfs=mount,dall ramdisk_size=65536  lang=$LangParam splash=silent","icon":"opensuse.ico","logo":""}, 
+#	{"distribution":"openSUSE","version":"10.3","media":"NET","kernel":"linux","drivers":"initrd","boot_dir":"","boot_dl_dir":"ftp://ftp4.gwdg.de/pub/opensuse/distribution/SL-OSS-factory/inst-source/boot/$ARCH/loader","kernel_append":"devfs=mount,dall ramdisk_size=65536 install=ftp:pub/opensuse/distribution/SL-OSS-factory/inst-source/ server=ftp4.gwdg.de lang=$LangParam splash=silent","icon":"opensuse.ico","logo":""},
+#	{"distribution":"openSUSE","version":"10.3","media":"LOCAL","kernel":"linux","drivers":"initrd","boot_dir":"$EXEDIR\\boot\\$ARCH\\loader","boot_dl_dir":"","kernel_append":"devfs=mount,dall ramdisk_size=65536  lang=$LangParam splash=silent","icon":"opensuse.ico","logo":""}, 
+#	{"distribution":"openSUSE","version":"10.3","media":"CDROM","kernel":"linux","drivers":"initrd","boot_dir":"","boot_dl_dir":"","kernel_append":"devfs=mount,dall ramdisk_size=65536  lang=$LangParam splash=silent","icon":"opensuse.ico","logo":""}, 
 	]
 
 #languages = ["catalan"]
